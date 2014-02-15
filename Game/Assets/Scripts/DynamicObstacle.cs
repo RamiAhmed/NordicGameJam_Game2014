@@ -7,7 +7,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public ObstacleType Type = ObstacleType.NEUTRAL;
 
-	public float HitDamageAmount = 5f;
+	public float HitDamageAmount = 0.5f;
 
 	public float MovementSpeed = 10f;
 
