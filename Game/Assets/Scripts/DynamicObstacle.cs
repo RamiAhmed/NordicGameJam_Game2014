@@ -118,6 +118,7 @@ public class DynamicObstacle : MonoBehaviour {
 			RemoveSelf();
 		}
 
+		Vector3 movementDir3 = _endPoint - _startPoint;
 		// If we're within reach of the end point, restart 
 		if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 			_startPoint = _endPoint;
