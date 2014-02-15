@@ -131,8 +131,8 @@ public class DynamicObstacle : MonoBehaviour {
 		// If we're within reach of the end point, restart 
 		if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 			_startPoint = _endPoint;
-		Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
-		//Debug.Log("Movement direction: " + movementDir2.ToString());
+			Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
+			//Debug.Log("Movement direction: " + movementDir2.ToString());
 
 		}
 		else {
@@ -162,10 +162,6 @@ public class DynamicObstacle : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate() {
-
-
-	}
 
 	public void RemoveSelf() {
 		if (GameController.Instance.DynamicObstacles.Contains(this)) {
