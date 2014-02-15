@@ -7,9 +7,7 @@ public class GameController : MonoBehaviour {
 	public GameObject Player = null;
 	private PlayerController _player;
 
-	public float SpawnRadiusFromPlayer = 50f;
-
-	public int InitialAmountOfDynamicObstacles = 15;
+	public int InitialAmountOfDynamicObstacles = 1;
 
 	public List<DynamicObstacle> DynamicObstacles = null;
 
@@ -82,7 +80,16 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			else {
-				Debug.LogError("Player oject has not been set on GameController");
+				Player = GameObject.FindGameObjectWithTag("Player");
+				if (Player != null) {
+					_player = Player.GetComponent<PlayerController>();
+					if (_player == null) {
+						Debug.LogError("Could not find PlayerController component on Player: " + Player.ToString());
+					}
+				}
+				else {
+					Debug.LogError("Player oject has not been set on GameController and could not be automatically found");
+				}
 			}
 		}
 	}
@@ -98,7 +105,7 @@ public class GameController : MonoBehaviour {
 		GameTime += Time.deltaTime;
 
 		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0) {
-			spawnDynamicObstacle();
+			SpawnDynamicObstacle();
 		}	
 
 	}
@@ -107,17 +114,10 @@ public class GameController : MonoBehaviour {
 		GUI.Box (new Rect(5f, 5f, 100f, 50f), new GUIContent("Time: " + GameTime.ToString("F1")));
 	}
 
-	private void spawnDynamicObstacle() {
+	public void SpawnDynamicObstacle() {
 		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
 
-		DynamicObstacle dynamicObstacle = (Instantiate(Resources.Load("DynamicObstacle")) as GameObject).GetComponent<DynamicObstacle>();
-		DynamicObstacles.Add(dynamicObstacle);
+		Instantiate(Resources.Load("DynamicObstacle"));
 
-		float randValue = Random.value;
-		dynamicObstacle.transform.position = _player.transform.position + (new Vector3(randValue, 0f, 1 - randValue) * SpawnRadiusFromPlayer * 2f);
-
-		if (Vector3.Distance(_player.transform.position, dynamicObstacle.transform.position) < SpawnRadiusFromPlayer) {
-			dynamicObstacle.RemoveSelf();
-		}
 	}
 }

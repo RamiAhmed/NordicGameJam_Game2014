@@ -3,30 +3,46 @@ using System.Collections;
 
 public class DynamicObstacle : MonoBehaviour {
 
-	public float KillY = -10f;
+	public float MovementSpeed = 10f;
+	
+	public float SpawnRadiusFromPlayer = 50f;
+
+	public float MaxMoveDistance = 100f;
+
+	public float KillY = -15f;
 
 	private PlayerController _player = null;
 
+	private Vector3 _startPoint = Vector3.zero, _endPoint = Vector3.zero;
+	private float _moveDuration = 0f, _startTime = 0f;
+
 	// Use this for initialization
 	void Start () {
-		Debug.Log("Starting dynamic obstacle at: " + this.transform.position.ToString() + " at time: " + GameController.Instance.GameTime.ToString("F1"));
+		Debug.Log("Starting dynamic obstacle at time: " + GameController.Instance.GameTime.ToString("F1"));
 
 		_player = GameController.Instance.Player.GetComponent<PlayerController>();
 		if (_player == null) {
 			Debug.LogError(this.ToString() + " could not find the player through the GameController: " + GameController.Instance.ToString());
 		}
+
+		Initialize();
 	}
 
-	void Initialize() {
+	void Initialize() {		
+		Vector3 startPos = _player.transform.position + (Random.onUnitSphere * SpawnRadiusFromPlayer);
+		startPos.y = getTerrainHeightAtPosition(startPos);
+		this.transform.position = startPos;
+
+		_startPoint = this.transform.position;
+
+		_endPoint = this.transform.position + (Random.onUnitSphere * MaxMoveDistance);
+		_endPoint.y = getTerrainHeightAtPosition(_endPoint);
+
+		_moveDuration = Vector3.Distance(_startPoint, _endPoint) / MovementSpeed;
+
+		_startTime = GameController.Instance.GameTime;
+
 		GameController.Instance.DynamicObstacles.Add(this);
-		
-		float randValue = Random.value;
-		this.transform.position = _player.transform.position + (new Vector3(randValue, 0f, 1 - randValue) * GameController.Instance.SpawnRadiusFromPlayer);
-		
-		if (Vector3.Distance(_player.transform.position, this.transform.position) < GameController.Instance.SpawnRadiusFromPlayer) {
-			this.RemoveSelf(); // Remove if we're within the allowed radius
-			Debug.LogWarning("Removing " + this.ToString() + " because it is too close to the player. Distance calculated: " + Vector3.Distance(_player.transform.position, this.transform.position).ToString());
-		}
 	}
 	
 	// Update is called once per frame
@@ -37,6 +53,12 @@ public class DynamicObstacle : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		float durationProgress = (GameController.Instance.GameTime - _startTime) / _moveDuration;
+		this.transform.position = Vector3.Lerp(_startPoint, _endPoint, durationProgress);
+
+		if (durationProgress >= 1f) {
+			RemoveSelf();
+		}
 
 	}
 
@@ -45,5 +67,12 @@ public class DynamicObstacle : MonoBehaviour {
 		Destroy(this.gameObject);
 
 		Debug.Log(this.ToString() + " is self-removing at time: " + GameController.Instance.GameTime);
+
+		GameController.Instance.SpawnDynamicObstacle();
+	}
+
+	private float getTerrainHeightAtPosition(Vector3 position) {
+		float objectHeight = GetComponentInChildren<Collider>().bounds.extents.y / 2f;
+		return Terrain.activeTerrain.SampleHeight(position) + objectHeight;
 	}
 }
