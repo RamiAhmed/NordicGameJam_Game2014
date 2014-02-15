@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
 		InvokeRepeating("regenerate", 1f, 1f);
 
 		if (PlayerBubble == null) {
-
+			Debug.LogWarning("Missing player bubble reference! Set it in the inspector.");
 		}
 
 	}
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
-			float width = 300f, height = 150f;
+			float width = 400f, height = 150f;
 			GUI.Label(new Rect(Screen.width/3f, Screen.height/3f, width, height), _feedbackText);
 		}
 	}
@@ -141,10 +141,12 @@ public class PlayerController : MonoBehaviour {
 			increaseMultiplier();
 		}
 
+		adjustPlayerBubble();
+
 
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
-				Debug.Log("Colliding with: " + hitCollider);
+//				Debug.Log("Colliding with: " + hitCollider);
 				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
 					DynamicObstacle dynObs = hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>();
 					if (dynObs != null) {
@@ -171,8 +173,25 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	private void adjustPlayerBubble() {
+		if (PlayerBubble != null) {
+			float minBubbleSize = 1.75f, maxBubbleSize = 2.5f;
+			float minBubbleAlpha = 0.2f, maxBubbleAlpha = 0.5f;
+
+			float health = PlayerHealth/100f;
+			float size = minBubbleSize + (health * (maxBubbleSize - minBubbleSize));
+			float alpha = minBubbleAlpha + (health * (maxBubbleAlpha - minBubbleAlpha));
+
+			PlayerBubble.transform.localScale = new Vector3(size, size, size);
+
+			foreach (Renderer rend in PlayerBubble.GetComponentsInChildren<Renderer>()) {
+				rend.material.color = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, alpha);
+			}
+		}
+	}
+
 	private void takeDamage(float damageAmount) {
-		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
+//		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
 		PlayerHealth -= damageAmount;
 		if (PlayerHealth > 100f) 
 			PlayerHealth = 100f;

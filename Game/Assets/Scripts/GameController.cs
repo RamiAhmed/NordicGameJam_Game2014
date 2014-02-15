@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
+//		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
 
 		GameObject obst = Instantiate(Resources.Load("DynamicObstacle")) as GameObject;
 		/*DynamicObstacle o = obst.GetComponent<DynamicObstacle>();
