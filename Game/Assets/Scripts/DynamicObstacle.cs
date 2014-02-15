@@ -3,6 +3,10 @@ using System.Collections;
 
 public class DynamicObstacle : MonoBehaviour {
 
+	public enum ObstacleType { NEUTRAL, ENEMY, TARGET };
+
+	public ObstacleType Type = ObstacleType.NEUTRAL;
+
 	public float MovementSpeed = 10f;
 
 	public float Deceleration = 5f;
@@ -70,6 +74,8 @@ public class DynamicObstacle : MonoBehaviour {
 		GameController.Instance.DynamicObstacles.Add(this);
 
 		_initialized = true;
+
+		// TODO change visualization of type
 	}
 
 	// Returns true if any other dynamic obstacle is within MinDistanceFromOtherObstacles
@@ -123,7 +129,7 @@ public class DynamicObstacle : MonoBehaviour {
 		if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 			_startPoint = _endPoint;
 		Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
-		Debug.Log("Movement direction: " + movementDir2.ToString());
+		//Debug.Log("Movement direction: " + movementDir2.ToString());
 
 		}
 		else {
@@ -160,7 +166,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public void RemoveSelf() {
 		if (GameController.Instance.DynamicObstacles.Contains(this)) {
-			GameController.Instance.DynamicObstacles.Remove(this);
+			GameController.Instance.Remove(this);
 		}
 
 		Destroy(this.gameObject);
