@@ -113,7 +113,8 @@ public class GameController : MonoBehaviour {
 		DynamicObstacle dynamicObstacle = (Instantiate(Resources.Load("DynamicObstacle")) as GameObject).GetComponent<DynamicObstacle>();
 		DynamicObstacles.Add(dynamicObstacle);
 
-		dynamicObstacle.transform.position = _player.transform.position + (new Vector3(Random.value, 0f, Random.value) * SpawnRadiusFromPlayer * 2f);
+		float randValue = Random.value;
+		dynamicObstacle.transform.position = _player.transform.position + (new Vector3(randValue, 0f, 1 - randValue) * SpawnRadiusFromPlayer * 2f);
 
 		if (Vector3.Distance(_player.transform.position, dynamicObstacle.transform.position) < SpawnRadiusFromPlayer) {
 			dynamicObstacle.RemoveSelf();
