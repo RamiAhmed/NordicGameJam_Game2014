@@ -7,6 +7,8 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public ObstacleType Type = ObstacleType.NEUTRAL;
 
+	public float HitDamageAmount = 5f;
+
 	public float MovementSpeed = 10f;
 
 	public float Deceleration = 5f;
@@ -172,7 +174,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 		Destroy(this.gameObject);
 
-		Debug.Log(this.ToString() + " is self-removing at time: " + GameController.Instance.GameTime);
+		//Debug.Log(this.ToString() + " is self-removing at time: " + GameController.Instance.GameTime);
 
 		GameController.Instance.SpawnDynamicObstacle();
 	}

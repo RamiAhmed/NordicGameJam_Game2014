@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 		this.transform.position = _startPoint;
 		this.transform.LookAt(_terrainCenterPoint);
 
+		PlayerHealth = 100f;
+
 	}
 
 	// Update is called once per frame
@@ -41,5 +43,24 @@ public class PlayerController : MonoBehaviour {
 		if (transform.position.y < DeathY) {
 			Respawn();
 		}
+
+
+		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
+			if (hitCollider.gameObject.CompareTag("DynamicObstacle")) {
+				takeDamage(hitCollider.gameObject.GetComponent<DynamicObstacle>().HitDamageAmount);
+			}
+		}
 	}
+
+	private void takeDamage(float damageAmount) {
+		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
+		PlayerHealth -= damageAmount; 
+
+		if (PlayerHealth <= 0f) {
+			Invoke("Respawn", 1.5f);
+		}
+	}
+
 }
+
+
