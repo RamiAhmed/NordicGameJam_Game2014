@@ -84,6 +84,7 @@ public class GameController : MonoBehaviour {
 				InvokeRepeating("SpawnDynamicObstacle", 15f, (float)SpawnInterval);
 			}
 
+			# region Get Player Reference
 			if (Player != null) {
 				_player = Player.GetComponent<PlayerController>();
 				if (_player == null) {
@@ -102,6 +103,7 @@ public class GameController : MonoBehaviour {
 					Debug.LogError("Player oject has not been set on GameController and could not be automatically found");
 				}
 			}
+			#endregion
 		}
 	}
 
@@ -129,7 +131,7 @@ public class GameController : MonoBehaviour {
 	void OnGUI() {
 		string feedback = "Time: " + GameTime.ToString("F1");
 		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
-		feedback += "\nPlayer health: " + _player.PlayerHealth;
+		feedback += "\nPlayer health: " + _player.PlayerHealth.ToString();
 		
 		GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
 	}
