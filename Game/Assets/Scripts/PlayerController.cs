@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Respawn() {
+		if (_waypoints.Length <= 0) return;
+
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 		
 		this.transform.position = _startPoint;

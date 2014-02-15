@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
 
 	public int InitialAmountOfDynamicObstacles = 5;
 
+	public bool DEBUG_Spawn = true;
+
 	public List<DynamicObstacle> DynamicObstacles = null;
 
 	public float GameTime = 0f;
@@ -86,16 +88,22 @@ public class GameController : MonoBehaviour {
 
 			DynamicObstacles = new List<DynamicObstacle>();
 
-			for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
-				Invoke("SpawnDynamicObstacle", 3f + (float)i * 0.1f);
-			}
+			if (DEBUG_Spawn)
+			{
+				for (int i = 0; i < InitialAmountOfDynamicObstacles; i++)
+				{
+					Invoke("SpawnDynamicObstacle", 3f + (float)i * 0.1f);
+				}
 
-			if (SpawnPeriodically) {
-				InvokeRepeating("SpawnDynamicObstacle", SpawnInterval, SpawnInterval);
-			}
+				if (SpawnPeriodically)
+				{
+					InvokeRepeating("SpawnDynamicObstacle", SpawnInterval, SpawnInterval);
+				}
 
-			if (SwapTypesPeriodically) {
-				InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
+				if (SwapTypesPeriodically)
+				{
+					InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
+				}
 			}
 
 			if (AudioController == null) {

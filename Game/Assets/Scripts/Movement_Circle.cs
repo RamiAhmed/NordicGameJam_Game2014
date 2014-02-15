@@ -15,14 +15,7 @@ public abstract class Movement_Circle : MonoBehaviour
 
 	private GameController gameController;
 
-	/// <summary>
-	/// Spherical coordinates,
-	/// x - angles on left/right axis
-	/// y - angles on up/down axis
-	/// z/radius - distance from center
-	/// </summary>
 	private Vector2 velocity = Vector2.zero;
-	private Vector2 position = Vector2.zero;
 
 	void Awake()
 	{
@@ -40,15 +33,17 @@ public abstract class Movement_Circle : MonoBehaviour
 			// integrate speed
 			Vector2 acceleration = input * (MoveSpeed / Mass);
 			velocity += acceleration * Time.deltaTime;
+
+			velocity = Vector2.ClampMagnitude(velocity, MaxMoveSpeed);
 		}
 		else
 		{
 			// slow down
+			velocity = Vector2.Lerp(velocity, Vector2.zero, Deceleration * Time.deltaTime);
 		}
 
-		position += velocity * Time.deltaTime;
-
-		// set real world coords
+		transform.RotateAround(Vector3.zero, transform.right, velocity.y * Time.deltaTime); // move forward/backward
+		transform.RotateAround(Vector3.zero, -transform.up, velocity.x * Time.deltaTime); // move right/left
 
 	}
 }
