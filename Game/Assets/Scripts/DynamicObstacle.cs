@@ -64,7 +64,7 @@ public class DynamicObstacle : Movement {
 		// Move the object to the start position
 		this.transform.position = _startPoint;
 
-		Debug.Log(this.ToString() + ". StartPoint: " + _startPoint.ToString() + ". EndPoint: " + _endPoint.ToString());
+		//Debug.Log(this.ToString() + ". StartPoint: " + _startPoint.ToString() + ". EndPoint: " + _endPoint.ToString());
 
 		// Add the object to the game controller's list of dynamic obstacles
 		GameController.Instance.DynamicObstacles.Add(this);
@@ -86,27 +86,23 @@ public class DynamicObstacle : Movement {
 	}
 
 	// Returns a random end point based on the cached waypoints
-	private Vector3 getRandomEndPoint() {
-		//int failSafe = 0;
-
-		//Vector3 endPoint = Vector3.zero;
-		//do {
-		//	endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
-
-		//	failSafe++;
-		//	if (failSafe >= 100) {
-		//		Debug.LogError("Could not find a valid endPoint before the time ran out");
-		//		break;
-		//	}
-			
-		//} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
-
-		//return endPoint;
+	private Vector3 getRandomEndPoint() 
+	{
+		int failSafe = 0;
 
 		Vector3 endPoint = Vector3.zero;
-		Waypoint[] w = FindObjectsOfType(typeof(Waypoint)) as Waypoint[];
-		if (w.Length != 0)
-			endPoint = w[Random.Range(0, w.Length - 1)].transform.position;
+		do
+		{
+			endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
+
+			failSafe++;
+			if (failSafe >= 100)
+			{
+				Debug.LogError("Could not find a valid endPoint before the time ran out");
+				break;
+			}
+
+		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
 
 		return endPoint;
 	}
@@ -122,50 +118,13 @@ public class DynamicObstacle : Movement {
 			RemoveSelf();
 		}
 
-		// If we're within reach of the end point, restart 
-		/*if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
-			_startPoint = _endPoint;
+		
+		Vector3 movementDir3 = (_endPoint - _startPoint);
 
-			_endPoint = getRandomEndPoint();
+		Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
+		Debug.Log("Movement direction: " + movementDir2.ToString());
 
-		}
-		else {*/
-		/*	
-			if (Vector3.Distance(this.transform.position, _endPoint) >= SlowingDistance) {
-				Vector3 movementDirection = (_endPoint - _startPoint).normalized;
-				movementDirection.y = 0f;
-
-				this.transform.forward = Vector3.Lerp(this.transform.forward, movementDirection, Time.deltaTime * TurnSpeed);
-
-				this.rigidbody.AddForce(movementDirection * MovementSpeed);
-			}
-			else {
-				Vector3 velocity = this.rigidbody.velocity;
-				velocity.x = Mathf.Lerp(velocity.x, 0f, Time.deltaTime * Deceleration);
-				velocity.z = Mathf.Lerp(velocity.z, 0f, Time.deltaTime * Deceleration);
-				this.rigidbody.velocity = velocity;
-
-				this.rigidbody.angularVelocity = Vector3.zero;
-			}
-			 */
-			Vector3 movementDir3 = (_endPoint - _startPoint);
-			Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
-			
-			//movementDir2.Normalize();
-		/*
-			if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
-				//movementDir2 = Vector2.zero;
-
-				//_startPoint = _endPoint;
-				
-				//_endPoint = getRandomEndPoint();
-			}
-		*/
-			Debug.Log("Movement direction: " + movementDir2.ToString());
-
-			Move(movementDir2);
-
-		//}
+		Move(movementDir2);
 	}
 
 	void FixedUpdate() {
