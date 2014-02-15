@@ -126,12 +126,13 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	//void OnGUI() {
-	//	string feedback = "Time: " + GameTime.ToString("F1");
-	//	feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
+	void OnGUI() {
+		string feedback = "Time: " + GameTime.ToString("F1");
+		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
+		feedback += "\nPlayer health: " + _player.PlayerHealth;
 		
-	//	GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
-	//}
+		GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
+	}
 
 	public void SpawnDynamicObstacle() {
 		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
