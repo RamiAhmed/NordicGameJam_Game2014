@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+
+	[Range(0, 100)]
+	public float PlayerHealth = 100f;
+
 	public int DeathY = -7;
-	private Vector3 _startPoint
+
+	private Vector3 _startPoint = Vector3.zero;
 	private Vector3 _terrainCenterPoint = Vector3.zero;
 
 	private GameObject[] _waypoints = null;
