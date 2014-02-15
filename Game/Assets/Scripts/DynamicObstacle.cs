@@ -30,7 +30,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log("Starting dynamic obstacle at time: " + GameController.Instance.GameTime.ToString("F1"));
+		//Debug.Log("Starting dynamic obstacle at time: " + GameController.Instance.GameTime.ToString("F1"));
 
 		_player = GameController.Instance.Player.GetComponent<PlayerController>();
 		if (_player == null) {
@@ -98,7 +98,7 @@ public class DynamicObstacle : MonoBehaviour {
 			failSafe++;
 			if (failSafe >= 100)
 			{
-				Debug.LogError("Could not find a valid endPoint before the time ran out");
+				//Debug.LogError("Could not find a valid endPoint before the time ran out");
 				break;
 			}
 
@@ -167,7 +167,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 		Debug.Log(this.ToString() + " is self-removing at time: " + GameController.Instance.GameTime);
 
-		//GameController.Instance.SpawnDynamicObstacle();
+		GameController.Instance.SpawnDynamicObstacle();
 	}
 
 	/*
