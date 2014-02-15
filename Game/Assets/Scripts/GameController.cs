@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour {
 	private int targetsSpawned = 0;
 	private int enemiesSpawned = 0;
 */
+	public float WorldRadius = 20;
+
 	#region GameController Singleton Pattern
 	public static string PrefabPathAndName = "GameController";
 
