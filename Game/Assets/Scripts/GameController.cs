@@ -16,11 +16,17 @@ public class GameController : MonoBehaviour {
 
 	public bool SpawnPeriodically = true;
 
+	public float SwapTypesInterval = 30f;
+	public bool SwapTypesPeriodically = true;
+
+	public float EnemySpawnChance = 0.3f;
+
+	/*
 	public int MaxTargets = 1;
 	public int MaxEnemiesSpawned = 5;
 	private int targetsSpawned = 0;
 	private int enemiesSpawned = 0;
-
+*/
 	#region GameController Singleton Pattern
 	public static string PrefabPathAndName = "GameController";
 
@@ -84,7 +90,11 @@ public class GameController : MonoBehaviour {
 				InvokeRepeating("SpawnDynamicObstacle", 15f, (float)SpawnInterval);
 			}
 
-			# region Get Player Reference
+			if (SwapTypesPeriodically) {
+				InvokeRepeating("SwapDynamicObstacleTypes", 15f, SwapTypesInterval);
+			}
+
+			#region Get Player Reference
 			if (Player != null) {
 				_player = Player.GetComponent<PlayerController>();
 				if (_player == null) {
@@ -110,10 +120,10 @@ public class GameController : MonoBehaviour {
 	public void Remove(DynamicObstacle obstacle)
 	{
 		DynamicObstacles.Remove(obstacle);
-		if (obstacle.Type == DynamicObstacle.ObstacleType.ENEMY)
+		/*if (obstacle.Type == DynamicObstacle.ObstacleType.ENEMY)
 			enemiesSpawned--;
 		else if (obstacle.Type == DynamicObstacle.ObstacleType.TARGET)
-			targetsSpawned--;
+			targetsSpawned--;*/
 	}
 	
 	// Update is called once per frame
@@ -140,7 +150,7 @@ public class GameController : MonoBehaviour {
 		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
 
 		GameObject obst = Instantiate(Resources.Load("DynamicObstacle")) as GameObject;
-		DynamicObstacle o = obst.GetComponent<DynamicObstacle>();
+		/*DynamicObstacle o = obst.GetComponent<DynamicObstacle>();
 		
 		if (targetsSpawned < MaxTargets)
 		{
@@ -152,6 +162,20 @@ public class GameController : MonoBehaviour {
 		{
 			o.Type = DynamicObstacle.ObstacleType.ENEMY;
 			enemiesSpawned++;
+		}*/
+	}
+
+	private void SwapDynamicObstacleTypes() {
+		foreach (DynamicObstacle dynObs in DynamicObstacles) {
+			if (Random.value < EnemySpawnChance) {
+				dynObs.Type = DynamicObstacle.ObstacleType.ENEMY;
+			}
+			else {
+				dynObs.Type = DynamicObstacle.ObstacleType.NEUTRAL;
+			}
 		}
+
+		DynamicObstacles[Random.Range(0, DynamicObstacles.Count)].Type = DynamicObstacle.ObstacleType.TARGET;
+
 	}
 }

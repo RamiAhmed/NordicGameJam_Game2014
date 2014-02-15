@@ -66,7 +66,16 @@ public class PlayerController : MonoBehaviour {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
 				Debug.Log("Colliding with: " + hitCollider);
 				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
-					takeDamage(hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>().HitDamageAmount);
+					DynamicObstacle dynObs = hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>();
+					if (dynObs != null) {
+						float damageAmount = dynObs.HitDamageAmount;
+						switch (dynObs.Type) {
+							case DynamicObstacle.ObstacleType.ENEMY: damageAmount *= 2f; break;
+							case DynamicObstacle.ObstacleType.TARGET: damageAmount *= -1f; break;
+						}
+
+						takeDamage(damageAmount);
+					}
 				}
 			}
 		}
@@ -75,7 +84,9 @@ public class PlayerController : MonoBehaviour {
 
 	private void takeDamage(float damageAmount) {
 		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
-		PlayerHealth -= damageAmount; 
+		PlayerHealth -= damageAmount;
+		if (PlayerHealth > 100f) 
+			PlayerHealth = 100f;
 
 		if (PlayerHealth <= 0f) {
 			IsDead = true;

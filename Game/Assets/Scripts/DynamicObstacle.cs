@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DynamicObstacle : MonoBehaviour {
 
@@ -158,7 +159,22 @@ public class DynamicObstacle : MonoBehaviour {
 					_endPoint = getRandomEndPoint();
 				}
 			}
+		}
 
+		switch (this.Type) {
+			case ObstacleType.ENEMY: changeMaterialColor(Color.red); break;
+			case ObstacleType.NEUTRAL: changeMaterialColor(Color.white); break;
+			case ObstacleType.TARGET: changeMaterialColor(Color.green); break;
+		}
+
+	}
+
+	private void changeMaterialColor(Color newColor) {
+		foreach (Renderer rend in GetComponentsInChildren<Renderer>()) {
+			foreach (Material mat in rend.materials) {
+				if (mat.color != newColor)
+					mat.color = newColor;
+			}
 		}
 	}
 
