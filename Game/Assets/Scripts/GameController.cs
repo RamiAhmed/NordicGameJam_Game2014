@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour {
 	public List<DynamicObstacle> DynamicObstacles = null;
 
 	public float GameTime = 0f;
-	public int SpawnInterval = 15;
+	public float SpawnInterval = 15f;
 
 	public bool SpawnPeriodically = true;
 
@@ -87,11 +87,11 @@ public class GameController : MonoBehaviour {
 			}
 
 			if (SpawnPeriodically) {
-				InvokeRepeating("SpawnDynamicObstacle", 15f, (float)SpawnInterval);
+				InvokeRepeating("SpawnDynamicObstacle", SpawnInterval, SpawnInterval);
 			}
 
 			if (SwapTypesPeriodically) {
-				InvokeRepeating("SwapDynamicObstacleTypes", 15f, SwapTypesInterval);
+				InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
 			}
 
 			#region Get Player Reference
