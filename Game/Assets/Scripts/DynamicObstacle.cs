@@ -7,14 +7,15 @@ public class DynamicObstacle : MonoBehaviour {
 	
 	public float SpawnRadiusFromPlayer = 50f;
 
-	public float MaxMoveDistance = 100f;
+	public float MinDistanceFromOtherObstacles = 15f;
+
+	public float MinMoveDistance = 100f;
 
 	public float KillY = -15f;
 
 	private PlayerController _player = null;
 
 	private Vector3 _startPoint = Vector3.zero, _endPoint = Vector3.zero;
-	private float _moveDuration = 0f, _startTime = 0f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,20 +30,34 @@ public class DynamicObstacle : MonoBehaviour {
 	}
 
 	void Initialize() {		
-		Vector3 startPos = _player.transform.position + (Random.onUnitSphere * SpawnRadiusFromPlayer);
-		startPos.y = getTerrainHeightAtPosition(startPos);
-		this.transform.position = startPos;
 
-		_startPoint = this.transform.position;
+		GameObject[] waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 
-		_endPoint = this.transform.position + (Random.onUnitSphere * MaxMoveDistance);
-		_endPoint.y = getTerrainHeightAtPosition(_endPoint);
+		do {
+			_startPoint = waypoints[Random.Range(0, waypoints.Length)].transform.position;
 
-		_moveDuration = Vector3.Distance(_startPoint, _endPoint) / MovementSpeed;
+		} while (Vector3.Distance(_startPoint, this.transform.position) < SpawnRadiusFromPlayer && !isAnyObstacleTooNear());
 
-		_startTime = GameController.Instance.GameTime;
+		do {
+			_endPoint = waypoints[Random.Range(0, waypoints.Length)].transform.position;
+
+		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
+
+		this.transform.position = _startPoint;
 
 		GameController.Instance.DynamicObstacles.Add(this);
+	}
+
+	private bool isAnyObstacleTooNear() {
+		bool result = false;
+		foreach (DynamicObstacle go in GameController.Instance.DynamicObstacles) {
+			if (Vector3.Distance(go.transform.position, this.transform.position) < MinDistanceFromOtherObstacles) {
+				result = true;
+				break;
+			}
+		}
+
+		return result;
 	}
 	
 	// Update is called once per frame
@@ -53,12 +68,7 @@ public class DynamicObstacle : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		float durationProgress = (GameController.Instance.GameTime - _startTime) / _moveDuration;
-		this.transform.position = Vector3.Lerp(_startPoint, _endPoint, durationProgress);
 
-		if (durationProgress >= 1f) {
-			RemoveSelf();
-		}
 
 	}
 
