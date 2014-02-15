@@ -46,8 +46,11 @@ public class PlayerController : MonoBehaviour {
 
 
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
-			if (hitCollider.gameObject.CompareTag("DynamicObstacle")) {
-				takeDamage(hitCollider.gameObject.GetComponent<DynamicObstacle>().HitDamageAmount);
+			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
+				Debug.Log("Colliding with: " + hitCollider);
+				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
+					takeDamage(hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>().HitDamageAmount);
+				}
 			}
 		}
 	}
