@@ -106,9 +106,10 @@ public class GameController : MonoBehaviour {
 		GameTime += Time.deltaTime;
 
 
-		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0) {
+		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
 			SpawnDynamicObstacle();
 		}	
+
 
 
 	}
