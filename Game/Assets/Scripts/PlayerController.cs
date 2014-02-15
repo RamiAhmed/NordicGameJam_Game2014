@@ -71,11 +71,6 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-		/*if (GameController.Instance.GameTime - _lastRegen >= 1f/PlayerRegenerationPerSecond) {
-			//PlayerHealth = (PlayerHealth + PlayerRegenerationPerSecond >= 100f) ? 100f : PlayerHealth + PlayerRegenerationPerSecond;
-		}*/
-
-
 	}
 
 	private void takeDamage(float damageAmount) {
