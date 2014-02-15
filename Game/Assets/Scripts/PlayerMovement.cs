@@ -9,6 +9,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	private const float deadZone = 0.25f;
 
+	protected Animator animator = null;
+
+	void Start() {
+		animator = GetComponentInChildren<Animator>();
+	}
+
 	void Update() {
 		if (!this.transform.root.GetComponent<PlayerController>().IsDead) {
 			Vector3 movementDir = Vector3.zero;
@@ -30,8 +36,10 @@ public class PlayerMovement : MonoBehaviour {
 				// move
 				rigidbody.AddForce(movementDir * FloorMoveSpeed);
 
-				if (!animation.IsPlaying("PlayerRunning")) 
-					animation.Play("PlayerRunning");
+				if (animator) {
+					animator.SetBool("isRunning", true);
+				}
+
 			}
 			else
 			{
@@ -45,8 +53,9 @@ public class PlayerMovement : MonoBehaviour {
 				rigidbody.angularVelocity = Vector3.zero;
 
 				if (rigidbody.velocity.magnitude <= 0.1f) {
-					if (animation.IsPlaying("PlayerRunning")) 
-						animation.Play("PlayerRunning");
+					if (animator) {
+						animator.SetBool("isRunning", false);
+					}
 				}
 			}
 		}

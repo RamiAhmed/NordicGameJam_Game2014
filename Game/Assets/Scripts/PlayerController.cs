@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject PlayerBubble = null;
 
+	private Animator _animator = null;
+
 
 	// Use this for initialization
 	void Start() {
@@ -55,6 +57,8 @@ public class PlayerController : MonoBehaviour {
 		if (PlayerBubble == null) {
 			Debug.LogWarning("Missing player bubble reference! Set it in the inspector.");
 		}
+
+		_animator = GetComponentInChildren<Animator>();
 
 	}
 
@@ -107,6 +111,10 @@ public class PlayerController : MonoBehaviour {
 		_lastMultiplierIncrease = 0f;
 		_lastMultiplierDecrease = 0f;
 
+		if (_animator) {
+			_animator.SetBool("isRunning", false);
+			_animator.SetBool("isDead", false);
+		}
 	}
 
 	void OnGUI() {
@@ -199,6 +207,11 @@ public class PlayerController : MonoBehaviour {
 
 		if (PlayerHealth <= 0f) {
 			PrintFeedback("System catastrophic crash!");
+
+			if (_animator) {
+				_animator.SetBool("isRunning", false);
+				_animator.SetBool("isDead", true);
+			}
 
 			IsDead = true;
 
