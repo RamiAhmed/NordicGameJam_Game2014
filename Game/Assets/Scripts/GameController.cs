@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour {
 			DynamicObstacles = new List<DynamicObstacle>();
 
 			for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
-				Invoke("SpawnDynamicObstacle", (float)i * 0.1f);
+				Invoke("SpawnDynamicObstacle", 3f + (float)i * 0.1f);
 			}
 
 			if (SpawnPeriodically) {
