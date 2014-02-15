@@ -32,6 +32,16 @@ public class AudioController : MonoBehaviour {
 		}
 	}
 
+	public void NextClip() {
+		ChangeClip(_currentClip+1);
+	}
+
+	public void PreviousClip() {
+		if (_currentClip-1 >= 0) {
+			ChangeClip(_currentClip-1);
+		}
+	}
+
 	public void ChangeClip(int newClip) {
 		if (_audioSources[newClip] != null && AudioClips[newClip] != null && newClip != _currentClip) {
 			_audioSources[_currentClip].volume = 0f;

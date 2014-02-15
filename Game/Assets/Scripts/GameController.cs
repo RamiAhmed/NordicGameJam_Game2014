@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour {
 
 	public float EnemySpawnChance = 0.3f;
 
+	public AudioController AudioController = null;
+
 	/*
 	public int MaxTargets = 1;
 	public int MaxEnemiesSpawned = 5;
@@ -92,6 +94,10 @@ public class GameController : MonoBehaviour {
 
 			if (SwapTypesPeriodically) {
 				InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
+			}
+
+			if (AudioController == null) {
+				AudioController = this.GetComponent<AudioController>();
 			}
 
 			#region Get Player Reference

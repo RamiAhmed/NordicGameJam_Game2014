@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 	private GameObject[] _waypoints = null;
 
 	private float _lastMultiplierIncrease = 0f;
+	private float _lastMultiplierDecrease = 0f;
 
 	// Use this for initialization
 	void Start() {
@@ -52,11 +53,19 @@ public class PlayerController : MonoBehaviour {
 			_lastMultiplierIncrease = GameController.Instance.GameTime;
 
 			PlayerMultiplier++;
+
+			GameController.Instance.AudioController.NextClip();
 		}
 	}
 
 	private void decreaseMultiplier() {
-		PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1;
+		if (GameController.Instance.GameTime - _lastMultiplierDecrease > 3f) {
+			_lastMultiplierDecrease = GameController.Instance.GameTime;
+
+			PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1;
+
+			GameController.Instance.AudioController.PreviousClip();
+		}
 	}
 
 	void Respawn() {
@@ -70,6 +79,8 @@ public class PlayerController : MonoBehaviour {
 
 		PlayerMultiplier = 1;
 		PlayerScore = 0;
+
+		GameController.Instance.AudioController.ChangeClip(0);
 
 	}
 
@@ -96,10 +107,10 @@ public class PlayerController : MonoBehaviour {
 					if (dynObs != null) {
 						float damageAmount = dynObs.HitDamageAmount;
 						switch (dynObs.Type) {
-						case DynamicObstacle.ObstacleType.ENEMY: 
-							damageAmount *= 2f; 
-							decreaseMultiplier();
-							break;
+							case DynamicObstacle.ObstacleType.ENEMY: 
+								damageAmount *= 2f; 
+								decreaseMultiplier();
+								break;
 
 							case DynamicObstacle.ObstacleType.TARGET: 
 								damageAmount *= -1f; 
