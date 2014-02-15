@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour {
 							break;
 
 							case DynamicObstacle.ObstacleType.TARGET: 
-								PrintFeedback("Cleaned up the system successfully.");
+								PrintFeedback("System cleaned.");
 								damageAmount *= -1f; 
 								increaseMultiplier();
 							break;
