@@ -64,6 +64,8 @@ public class DynamicObstacle : Movement {
 		// Move the object to the start position
 		this.transform.position = _startPoint;
 
+		Debug.Log(this.ToString() + ". StartPoint: " + _startPoint.ToString() + ". EndPoint: " + _endPoint.ToString());
+
 		// Add the object to the game controller's list of dynamic obstacles
 		GameController.Instance.DynamicObstacles.Add(this);
 
@@ -143,14 +145,16 @@ public class DynamicObstacle : Movement {
 			Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
 			
 			//movementDir2.Normalize();
-
+		/*
 			if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
-				movementDir2 = Vector2.zero;
+				//movementDir2 = Vector2.zero;
 
 				//_startPoint = _endPoint;
 				
 				//_endPoint = getRandomEndPoint();
 			}
+		*/
+			Debug.Log("Movement direction: " + movementDir2.ToString());
 
 			Move(movementDir2);
 
