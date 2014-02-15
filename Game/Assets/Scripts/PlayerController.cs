@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
 	public float PlayerMultiplierIncreaseInterval = 30f;
 	public int PlayerMultiplier = 1;
 
+	public GUISkin PlayerFeedbackGUISkin = null;
+
 	[Range(0, 100)]
 	public float PlayerHealth = 100f;
 
@@ -30,6 +32,8 @@ public class PlayerController : MonoBehaviour {
 	private float _lastFeedback = 0f;
 	private string _feedbackText = "";
 
+	public float TimeAlive = 0f;
+
 	// Use this for initialization
 	void Start() {
 
@@ -44,8 +48,6 @@ public class PlayerController : MonoBehaviour {
 		this.transform.LookAt(_terrainCenterPoint);
 
 		InvokeRepeating("regenerate", 1f, 1f);
-
-		InvokeRepeating("increaseMultiplier", PlayerMultiplierIncreaseInterval, PlayerMultiplierIncreaseInterval);
 	}
 
 	private void regenerate() {
@@ -58,6 +60,8 @@ public class PlayerController : MonoBehaviour {
 
 			PlayerMultiplier++;
 
+			PrintFeedback("Multiplier +" + PlayerMultiplier.ToString());
+
 			GameController.Instance.AudioController.NextClip();
 		}
 	}
@@ -68,11 +72,15 @@ public class PlayerController : MonoBehaviour {
 
 			PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1;
 
+			PrintFeedback("Multiplier -" + PlayerMultiplier.ToString());
+
 			GameController.Instance.AudioController.PreviousClip();
 		}
 	}
 
 	void Respawn() {
+		PrintFeedback("Rebooting...");
+
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 		
 		this.transform.position = _startPoint;
@@ -84,14 +92,25 @@ public class PlayerController : MonoBehaviour {
 		PlayerMultiplier = 1;
 		PlayerScore = 0;
 
+		TimeAlive = 0f;
+
 		GameController.Instance.AudioController.ChangeClip(0);
+
+		_lastMultiplierIncrease = 0f;
+		_lastMultiplierDecrease = 0f;
 
 	}
 
 	void OnGUI() {
 		if (_feedbackText != "") {
-			float width = 150f, height = 75f;
-			GUI.Label(new Rect(Screen.width/2f - width, Screen.height/2f - height, width, height), _feedbackText);
+			if (PlayerFeedbackGUISkin != null) {
+				if (GUI.skin != PlayerFeedbackGUISkin) {
+					GUI.skin = PlayerFeedbackGUISkin;
+				}
+			}
+
+			float width = 300f, height = 150f;
+			GUI.Label(new Rect(Screen.width/3f, Screen.height/3f, width, height), _feedbackText);
 		}
 	}
 
@@ -109,6 +128,12 @@ public class PlayerController : MonoBehaviour {
 
 		PlayerScore += (Time.deltaTime * PlayerMultiplier);
 
+		TimeAlive += Time.deltaTime;
+
+		if (TimeAlive - _lastMultiplierIncrease > PlayerMultiplierIncreaseInterval) {
+			increaseMultiplier();
+		}
+
 
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
@@ -118,15 +143,17 @@ public class PlayerController : MonoBehaviour {
 					if (dynObs != null) {
 						float damageAmount = dynObs.HitDamageAmount;
 						switch (dynObs.Type) {
-							case DynamicObstacle.ObstacleType.ENEMY: 
+							case DynamicObstacle.ObstacleType.ENEMY:
+								PrintFeedback("Serious hacker attack!");
 								damageAmount *= 2f; 
 								decreaseMultiplier();
-								break;
+							break;
 
 							case DynamicObstacle.ObstacleType.TARGET: 
+								PrintFeedback("Cleaned up the system successfully.");
 								damageAmount *= -1f; 
 								increaseMultiplier();
-								break;
+							break;
 						}
 
 						takeDamage(damageAmount);
@@ -144,12 +171,14 @@ public class PlayerController : MonoBehaviour {
 			PlayerHealth = 100f;
 
 		if (PlayerHealth <= 0f) {
+			PrintFeedback("System catastrophic crash!");
+
 			IsDead = true;
 
 			this.rigidbody.velocity = Vector3.zero;
 			this.rigidbody.angularVelocity = Vector3.zero;
 
-			Invoke("Respawn", 1.5f);
+			Invoke("Respawn", 3f);
 		}
 	}
 
@@ -159,8 +188,13 @@ public class PlayerController : MonoBehaviour {
 			_lastFeedback = GameController.Instance.GameTime;
 
 			_feedbackText = feedback;
+
+			Invoke("disableFeedback", ShowFeedbackDuration);
 		}
-		else if (_feedbackText != "") {
+	}
+
+	private void disableFeedback() {
+		if (_feedbackText != "") {
 			_feedbackText = "";
 		}
 	}
