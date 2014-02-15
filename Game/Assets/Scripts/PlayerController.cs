@@ -7,9 +7,12 @@ public class PlayerController : MonoBehaviour {
 	[Range(0, 100)]
 	public float PlayerHealth = 100f;
 
+	public float PlayerRegenerationPerSecond = 0.5f;
+	private float _lastRegen = 0f;
+
 	public int DeathY = -7;
 
-	public bool isDead = false;
+	public bool IsDead = false;
 
 	private Vector3 _startPoint = Vector3.zero;
 	private Vector3 _terrainCenterPoint = Vector3.zero;
@@ -28,6 +31,12 @@ public class PlayerController : MonoBehaviour {
 		_terrainCenterPoint = new Vector3(terrainSize.x/2f, 0f, terrainSize.z/2f);
 
 		this.transform.LookAt(_terrainCenterPoint);
+
+		InvokeRepeating("regenerate", 1f, 1f);
+	}
+
+	private void regenerate() {
+		PlayerHealth = PlayerHealth + PlayerRegenerationPerSecond > 100f ? 100f : PlayerHealth + PlayerRegenerationPerSecond;
 	}
 
 	void Respawn() {
@@ -37,13 +46,13 @@ public class PlayerController : MonoBehaviour {
 		this.transform.LookAt(_terrainCenterPoint);
 
 		PlayerHealth = 100f;
-		isDead = false;
+		IsDead = false;
 
 	}
 
 	// Update is called once per frame
 	void Update() {
-		if (isDead) {
+		if (IsDead) {
 			return;
 		}
 
@@ -61,6 +70,12 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+
+		/*if (GameController.Instance.GameTime - _lastRegen >= 1f/PlayerRegenerationPerSecond) {
+			//PlayerHealth = (PlayerHealth + PlayerRegenerationPerSecond >= 100f) ? 100f : PlayerHealth + PlayerRegenerationPerSecond;
+		}*/
+
+
 	}
 
 	private void takeDamage(float damageAmount) {
@@ -68,7 +83,11 @@ public class PlayerController : MonoBehaviour {
 		PlayerHealth -= damageAmount; 
 
 		if (PlayerHealth <= 0f) {
-			isDead = true;
+			IsDead = true;
+
+			this.rigidbody.velocity = Vector3.zero;
+			this.rigidbody.angularVelocity = Vector3.zero;
+
 			Invoke("Respawn", 1.5f);
 		}
 	}
