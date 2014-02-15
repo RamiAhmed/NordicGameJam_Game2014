@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
 	public float GameTime = 0f;
 	public int SpawnInterval = 15;
 
+	public bool SpawnPeriodically = true;
+
 	#region GameController Singleton Pattern
 	public static string PrefabPathAndName = "GameController";
 
@@ -74,6 +76,10 @@ public class GameController : MonoBehaviour {
 				SpawnDynamicObstacle();
 			}
 
+			if (SpawnPeriodically) {
+				InvokeRepeating("SpawnDynamicObstacle", 15f, (float)SpawnInterval);
+			}
+
 			if (Player != null) {
 				_player = Player.GetComponent<PlayerController>();
 				if (_player == null) {
@@ -106,11 +112,9 @@ public class GameController : MonoBehaviour {
 		GameTime += Time.deltaTime;
 
 
-		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
+		/*if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
 			SpawnDynamicObstacle();
-		}	
-
-
+		}	*/
 
 	}
 
