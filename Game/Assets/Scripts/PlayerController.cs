@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
 		this.transform.LookAt(_terrainCenterPoint);
 
 		InvokeRepeating("regenerate", 1f, 1f);
+
+
 	}
 
 	private void regenerate() {
@@ -144,7 +146,7 @@ public class PlayerController : MonoBehaviour {
 						float damageAmount = dynObs.HitDamageAmount;
 						switch (dynObs.Type) {
 							case DynamicObstacle.ObstacleType.ENEMY:
-								PrintFeedback("Serious hacker attack!");
+								PrintFeedback("Malware detected!");
 								damageAmount *= 2f; 
 								decreaseMultiplier();
 							break;
