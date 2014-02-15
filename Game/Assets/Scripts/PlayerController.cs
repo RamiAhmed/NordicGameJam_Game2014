@@ -26,6 +26,10 @@ public class PlayerController : MonoBehaviour {
 	private float _lastMultiplierIncrease = 0f;
 	private float _lastMultiplierDecrease = 0f;
 
+	public float ShowFeedbackDuration = 4f;
+	private float _lastFeedback = 0f;
+	private string _feedbackText = "";
+
 	// Use this for initialization
 	void Start() {
 
@@ -84,6 +88,13 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	void OnGUI() {
+		if (_feedbackText != "") {
+			float width = 150f, height = 75f;
+			GUI.Label(new Rect(Screen.width/2f - width, Screen.height/2f - height, width, height), _feedbackText);
+		}
+	}
+
 	// Update is called once per frame
 	void Update() {
 		if (IsDead) {
@@ -139,6 +150,18 @@ public class PlayerController : MonoBehaviour {
 			this.rigidbody.angularVelocity = Vector3.zero;
 
 			Invoke("Respawn", 1.5f);
+		}
+	}
+
+
+	public void PrintFeedback(string feedback) {
+		if (GameController.Instance.GameTime - _lastFeedback > ShowFeedbackDuration) {
+			_lastFeedback = GameController.Instance.GameTime;
+
+			_feedbackText = feedback;
+		}
+		else if (_feedbackText != "") {
+			_feedbackText = "";
 		}
 	}
 
