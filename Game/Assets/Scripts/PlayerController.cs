@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
+	public float PlayerScore = 0f;
+	public float PlayerMultiplierIncreaseInterval = 30f;
+	public int PlayerMultiplier = 1;
+
 	[Range(0, 100)]
 	public float PlayerHealth = 100f;
 
@@ -19,6 +23,8 @@ public class PlayerController : MonoBehaviour {
 
 	private GameObject[] _waypoints = null;
 
+	private float _lastMultiplierIncrease = 0f;
+
 	// Use this for initialization
 	void Start() {
 
@@ -33,10 +39,20 @@ public class PlayerController : MonoBehaviour {
 		this.transform.LookAt(_terrainCenterPoint);
 
 		InvokeRepeating("regenerate", 1f, 1f);
+
+		InvokeRepeating("increaseMultiplier", PlayerMultiplierIncreaseInterval, PlayerMultiplierIncreaseInterval);
 	}
 
 	private void regenerate() {
 		PlayerHealth = PlayerHealth + PlayerRegenerationPerSecond > 100f ? 100f : PlayerHealth + PlayerRegenerationPerSecond;
+	}
+
+	private void increaseMultiplier() {
+		if (GameController.Instance.GameTime - _lastMultiplierIncrease > 3f) {
+			_lastMultiplierIncrease = GameController.Instance.GameTime;
+
+			PlayerMultiplier++;
+		}
 	}
 
 	void Respawn() {
@@ -47,6 +63,9 @@ public class PlayerController : MonoBehaviour {
 
 		PlayerHealth = 100f;
 		IsDead = false;
+
+		PlayerMultiplier = 1;
+		PlayerScore = 0;
 
 	}
 
@@ -62,6 +81,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 
+		PlayerScore += (Time.deltaTime * PlayerMultiplier);
+
+
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
 				Debug.Log("Colliding with: " + hitCollider);
@@ -70,8 +92,15 @@ public class PlayerController : MonoBehaviour {
 					if (dynObs != null) {
 						float damageAmount = dynObs.HitDamageAmount;
 						switch (dynObs.Type) {
-							case DynamicObstacle.ObstacleType.ENEMY: damageAmount *= 2f; break;
-							case DynamicObstacle.ObstacleType.TARGET: damageAmount *= -1f; break;
+						case DynamicObstacle.ObstacleType.ENEMY: 
+							damageAmount *= 2f; 
+							PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1; 
+							break;
+
+							case DynamicObstacle.ObstacleType.TARGET: 
+								damageAmount *= -1f; 
+								increaseMultiplier();
+								break;
 						}
 
 						takeDamage(damageAmount);

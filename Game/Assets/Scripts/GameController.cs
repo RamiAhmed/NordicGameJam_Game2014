@@ -142,6 +142,8 @@ public class GameController : MonoBehaviour {
 		string feedback = "Time: " + GameTime.ToString("F1");
 		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
 		feedback += "\nPlayer health: " + _player.PlayerHealth.ToString();
+		feedback += "\nPlayer score: " + _player.PlayerScore.ToString("F0");
+		feedback += "\nPlayer multiplier: " + _player.PlayerMultiplier.ToString();
 		
 		GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
 	}
