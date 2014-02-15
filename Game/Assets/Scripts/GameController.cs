@@ -74,6 +74,8 @@ public class GameController : MonoBehaviour {
 				SpawnDynamicObstacle();
 			}
 
+			InvokeRepeating("SpawnDynamicObstacle", 15f, (float)SpawnInterval);
+
 			if (Player != null) {
 				_player = Player.GetComponent<PlayerController>();
 				if (_player == null) {
@@ -106,11 +108,9 @@ public class GameController : MonoBehaviour {
 		GameTime += Time.deltaTime;
 
 
-		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
+		/*if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
 			SpawnDynamicObstacle();
-		}	
-
-
+		}	*/
 
 	}
 

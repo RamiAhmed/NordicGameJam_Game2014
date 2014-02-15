@@ -147,9 +147,9 @@ public class DynamicObstacle : Movement {
 			if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 				movementDir2 = Vector2.zero;
 
-				_startPoint = _endPoint;
+				//_startPoint = _endPoint;
 				
-				_endPoint = getRandomEndPoint();
+				//_endPoint = getRandomEndPoint();
 			}
 
 			Move(movementDir2);
