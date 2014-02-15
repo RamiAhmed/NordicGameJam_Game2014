@@ -3,11 +3,11 @@ using System.Collections;
 
 public class DynamicObstacle : Movement {
 
-//	public float MovementSpeed = 10f;
+	public float MovementSpeed = 10f;
 
-//	public float Deceleration = 5f;
+	public float Deceleration = 5f;
 
-//	public float TurnSpeed = 2.5f;
+	public float TurnSpeed = 2.5f;
 
 	public float SpawnRadiusFromPlayer = 50f;
 
@@ -16,7 +16,7 @@ public class DynamicObstacle : Movement {
 	public float MinMoveDistance = 50f;
 
 	public float RestartDistance = 5f;
-	//public float SlowingDistance = 15f;
+	public float SlowingDistance = 15f;
 
 	public float KillY = -15f;
 
@@ -56,7 +56,7 @@ public class DynamicObstacle : Movement {
 				break;
 			}
 			
-		} while (Vector3.Distance(_startPoint, this.transform.position) < SpawnRadiusFromPlayer && !isAnyObstacleTooNear());
+		} while (Vector3.Distance(_startPoint, this.transform.position) < SpawnRadiusFromPlayer || isAnyObstacleTooNear());
 
 		// Get a random end point (same method as start point)
 		_endPoint = getRandomEndPoint();
@@ -99,7 +99,7 @@ public class DynamicObstacle : Movement {
 				break;
 			}
 			
-		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
+		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance || (_endPoint - _startPoint).magnitude < 0.1f);
 
 		return endPoint;
 	}
@@ -116,14 +116,14 @@ public class DynamicObstacle : Movement {
 		}
 
 		// If we're within reach of the end point, restart 
-		/*if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
+		if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 			_startPoint = _endPoint;
 
 			_endPoint = getRandomEndPoint();
 
 		}
-		else {*/
-		/*	
+		else {
+
 			if (Vector3.Distance(this.transform.position, _endPoint) >= SlowingDistance) {
 				Vector3 movementDirection = (_endPoint - _startPoint).normalized;
 				movementDirection.y = 0f;
@@ -139,26 +139,14 @@ public class DynamicObstacle : Movement {
 				this.rigidbody.velocity = velocity;
 
 				this.rigidbody.angularVelocity = Vector3.zero;
+
+				if (this.rigidbody.velocity.magnitude < 0.1f) {
+					_startPoint = _endPoint;
+					_endPoint = getRandomEndPoint();
+				}
 			}
-			 */
-			Vector3 movementDir3 = (_endPoint - _startPoint);
-			Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
-			
-			//movementDir2.Normalize();
-		/*
-			if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
-				//movementDir2 = Vector2.zero;
 
-				//_startPoint = _endPoint;
-				
-				//_endPoint = getRandomEndPoint();
-			}
-		*/
-			Debug.Log("Movement direction: " + movementDir2.ToString());
-
-			Move(movementDir2);
-
-		//}
+		}
 	}
 
 	void FixedUpdate() {
