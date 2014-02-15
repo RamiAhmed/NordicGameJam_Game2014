@@ -85,19 +85,26 @@ public class DynamicObstacle : Movement {
 
 	// Returns a random end point based on the cached waypoints
 	private Vector3 getRandomEndPoint() {
-		int failSafe = 0;
+		//int failSafe = 0;
+
+		//Vector3 endPoint = Vector3.zero;
+		//do {
+		//	endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
+
+		//	failSafe++;
+		//	if (failSafe >= 100) {
+		//		Debug.LogError("Could not find a valid endPoint before the time ran out");
+		//		break;
+		//	}
+			
+		//} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
+
+		//return endPoint;
 
 		Vector3 endPoint = Vector3.zero;
-		do {
-			endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
-
-			failSafe++;
-			if (failSafe >= 100) {
-				Debug.LogError("Could not find a valid endPoint before the time ran out");
-				break;
-			}
-			
-		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance);
+		Waypoint[] w = FindObjectsOfType(typeof(Waypoint)) as Waypoint[];
+		if (w.Length != 0)
+			endPoint = w[Random.Range(0, w.Length - 1)].transform.position;
 
 		return endPoint;
 	}
