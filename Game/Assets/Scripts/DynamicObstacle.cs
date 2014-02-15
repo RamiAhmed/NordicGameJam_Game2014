@@ -49,14 +49,14 @@ public class DynamicObstacle : MonoBehaviour {
 		int failSafe = 0;
 		do {
 			_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
-
+			
 			failSafe++;
 			if (failSafe > 100) {
 				Debug.LogError("Could not find a valid start point before the time ran out");
 				break;
 			}
 			
-		} while (Vector3.Distance(_startPoint, this.transform.position) < SpawnRadiusFromPlayer || isAnyObstacleTooNear());
+		} while (Vector3.Distance(_startPoint, this.transform.position) < SpawnRadiusFromPlayer || isAnyObstacleTooNear(this.transform.position));
 
 		// Get a random end point (same method as start point)
 		_endPoint = getRandomEndPoint();
@@ -73,15 +73,15 @@ public class DynamicObstacle : MonoBehaviour {
 	}
 
 	// Returns true if any other dynamic obstacle is within MinDistanceFromOtherObstacles
-	private bool isAnyObstacleTooNear() {
+	private bool isAnyObstacleTooNear(Vector3 comparisonPosition) {
 		bool result = false;
 		foreach (DynamicObstacle go in GameController.Instance.DynamicObstacles) {
-			if (Vector3.Distance(go.transform.position, this.transform.position) < MinDistanceFromOtherObstacles) {
+			if (Vector3.Distance(go.transform.position, comparisonPosition) < MinDistanceFromOtherObstacles) {
 				result = true;
 				break;
 			}
 		}
-
+		
 		return result;
 	}
 
@@ -89,21 +89,22 @@ public class DynamicObstacle : MonoBehaviour {
 	private Vector3 getRandomEndPoint() 
 	{
 		int failSafe = 0;
-
+		
 		Vector3 endPoint = Vector3.zero;
 		do
 		{
 			endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
-
+			
 			failSafe++;
-			if (failSafe >= 100)
-			{
-				//Debug.LogError("Could not find a valid endPoint before the time ran out");
+			
+			if (failSafe >= 1000) {
+				Debug.LogError("Could not find a valid endPoint before the time ran out");
 				break;
 			}
-
-		} while (Vector3.Distance(_startPoint, _endPoint) < MinMoveDistance || (_endPoint - _startPoint).magnitude < 0.1f);
-
+			
+		} while (Vector3.Distance(_startPoint, endPoint) < MinMoveDistance || isAnyObstacleTooNear(endPoint));
+		
+		
 		return endPoint;
 	}
 	

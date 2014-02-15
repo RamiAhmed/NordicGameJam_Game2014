@@ -72,8 +72,7 @@ public class GameController : MonoBehaviour {
 			DynamicObstacles = new List<DynamicObstacle>();
 
 			for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
-				//Invoke("SpawnDynamicObstacle", (float)i * 0.1f);
-				SpawnDynamicObstacle();
+				Invoke("SpawnDynamicObstacle", (float)i * 0.1f);
 			}
 
 			if (SpawnPeriodically) {
@@ -111,15 +110,13 @@ public class GameController : MonoBehaviour {
 		// Iterate the game time
 		GameTime += Time.deltaTime;
 
-
-		/*if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0 && GameTime > 1f) {
-			SpawnDynamicObstacle();
-		}	*/
-
 	}
 
 	void OnGUI() {
-		GUI.Box (new Rect(5f, 5f, 100f, 50f), new GUIContent("Time: " + GameTime.ToString("F1")));
+		string feedback = "Time: " + GameTime.ToString("F1");
+		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
+		
+		GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
 	}
 
 	public void SpawnDynamicObstacle() {
