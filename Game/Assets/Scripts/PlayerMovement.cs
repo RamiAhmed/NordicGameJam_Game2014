@@ -3,8 +3,9 @@ using System.Collections;
 
 public class PlayerMovement : Movement
 {
-	void Update()
-	{
-		Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	void Update() {
+		if (!this.transform.root.GetComponent<PlayerController>().isDead) {
+			Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+		}
 	}
 }

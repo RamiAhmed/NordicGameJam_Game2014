@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
 
 	public int DeathY = -7;
 
+	public bool isDead = false;
+
 	private Vector3 _startPoint = Vector3.zero;
 	private Vector3 _terrainCenterPoint = Vector3.zero;
 
@@ -35,11 +37,17 @@ public class PlayerController : MonoBehaviour {
 		this.transform.LookAt(_terrainCenterPoint);
 
 		PlayerHealth = 100f;
+		isDead = false;
 
 	}
 
 	// Update is called once per frame
 	void Update() {
+		if (isDead) {
+			return;
+		}
+
+
 		if (transform.position.y < DeathY) {
 			Respawn();
 		}
@@ -60,6 +68,7 @@ public class PlayerController : MonoBehaviour {
 		PlayerHealth -= damageAmount; 
 
 		if (PlayerHealth <= 0f) {
+			isDead = true;
 			Invoke("Respawn", 1.5f);
 		}
 	}
