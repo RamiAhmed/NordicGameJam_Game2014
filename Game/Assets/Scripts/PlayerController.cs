@@ -55,6 +55,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	private void decreaseMultiplier() {
+		PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1;
+	}
+
 	void Respawn() {
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 		
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour {
 						switch (dynObs.Type) {
 						case DynamicObstacle.ObstacleType.ENEMY: 
 							damageAmount *= 2f; 
-							PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1; 
+							decreaseMultiplier();
 							break;
 
 							case DynamicObstacle.ObstacleType.TARGET: 
