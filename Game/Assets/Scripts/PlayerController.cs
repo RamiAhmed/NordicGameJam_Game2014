@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float TimeAlive = 0f;
 
+	public GameObject PlayerBubble = null;
+
 	// Use this for initialization
 	void Start() {
 
@@ -49,6 +51,9 @@ public class PlayerController : MonoBehaviour {
 
 		InvokeRepeating("regenerate", 1f, 1f);
 
+		if (PlayerBubble == null) {
+
+		}
 
 	}
 
