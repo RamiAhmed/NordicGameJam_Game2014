@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DynamicObstacle : Movement {
+public class DynamicObstacle : MonoBehaviour {
 
 	public float MovementSpeed = 10f;
 
@@ -121,7 +121,6 @@ public class DynamicObstacle : Movement {
 		// If we're within reach of the end point, restart 
 		if (Vector3.Distance(this.transform.position, _endPoint) < RestartDistance) {
 			_startPoint = _endPoint;
-
 		Vector2 movementDir2 = new Vector2(movementDir3.x, movementDir3.z).normalized;
 		Debug.Log("Movement direction: " + movementDir2.ToString());
 
