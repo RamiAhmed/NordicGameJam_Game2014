@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour {
 	public GameObject Player = null;
 	private PlayerController _player;
 
-	public int InitialAmountOfDynamicObstacles = 1;
+	public int InitialAmountOfDynamicObstacles = 5;
 
 	public List<DynamicObstacle> DynamicObstacles = null;
 
@@ -70,7 +70,8 @@ public class GameController : MonoBehaviour {
 			DynamicObstacles = new List<DynamicObstacle>();
 
 			for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
-				Invoke("spawnDynamicObstacle", (float)i * 0.1f);
+				//Invoke("SpawnDynamicObstacle", (float)i * 0.1f);
+				SpawnDynamicObstacle();
 			}
 
 			if (Player != null) {
@@ -104,9 +105,11 @@ public class GameController : MonoBehaviour {
 		// Iterate the game time
 		GameTime += Time.deltaTime;
 
+
 		if (Mathf.RoundToInt(GameTime) % SpawnInterval == 0) {
 			SpawnDynamicObstacle();
 		}	
+
 
 	}
 

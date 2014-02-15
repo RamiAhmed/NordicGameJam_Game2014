@@ -8,7 +8,7 @@ public abstract class Movement : MonoBehaviour
 	public float FloorMoveSpeed = 10;
 	public float Deceleration = 5;
 	public float TurnSpeed = 2.5f;
-	public float Gravity = 10;
+//	public float Gravity = 10;
 
 	// private class variables
 	private const float deadZone = 0.25f;
