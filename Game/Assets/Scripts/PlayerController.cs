@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator _animator = null;
 
+	public List<AudioClip> ImpactAudioClips = new List<AudioClip>();
+	//private List<AudioSource> _impactAudioSources = new List<AudioSource>();
+	private AudioSource _impactAudioSource = null;
+
 
 	// Use this for initialization
 	void Start() {
@@ -59,6 +63,12 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		_animator = GetComponentInChildren<Animator>();
+
+		if (_impactAudioSource == null) {
+			_impactAudioSource = this.gameObject.AddComponent<AudioSource>();
+			_impactAudioSource.loop = false;
+			_impactAudioSource.playOnAwake = false;
+		}
 
 	}
 
@@ -175,6 +185,12 @@ public class PlayerController : MonoBehaviour {
 						}
 
 						takeDamage(damageAmount);
+
+						if (!_impactAudioSource.isPlaying) {
+							_impactAudioSource.clip = ImpactAudioClips[Random.Range(0, ImpactAudioClips.Count)];
+							_impactAudioSource.Play();
+						}
+
 					}
 				}
 			}
