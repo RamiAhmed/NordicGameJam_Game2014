@@ -40,7 +40,8 @@ public class DynamicObstacle : MonoBehaviour {
 	private GameObject[] _waypoints = null;
 
 	private Animator _animator = null;
-	
+
+
 	void Start () {
 		_player = GameController.Instance.Player.GetComponent<PlayerController>();
 		if (_player == null) {
