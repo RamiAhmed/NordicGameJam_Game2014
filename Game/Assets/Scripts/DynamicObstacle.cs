@@ -93,8 +93,7 @@ public class DynamicObstacle : MonoBehaviour {
 		int failSafe = 0;
 		
 		Vector3 endPoint = Vector3.zero;
-		do
-		{
+		do {
 			endPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 			
 			failSafe++;
@@ -107,6 +106,10 @@ public class DynamicObstacle : MonoBehaviour {
 		} while (Vector3.Distance(_startPoint, endPoint) < MinMoveDistance || isAnyObstacleTooNear(endPoint));
 
 		return endPoint;
+	}
+
+	public void GetNewDirection() {
+		_endPoint = getRandomEndPoint();
 	}
 
 	void Update () {
@@ -126,7 +129,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 			this.transform.forward = Vector3.Lerp(this.transform.forward, movementDirection, Time.deltaTime * TurnSpeed);
 
-			float speed = MovementSpeed + (_player.PlayerMultiplier * 0.1f);
+			float speed = (MovementSpeed + (_player.PlayerMultiplier * 0.1f)) * 2f;
 			this.rigidbody.AddForce(movementDirection * speed);
 
 			this.rigidbody.velocity = Vector3.ClampMagnitude(this.rigidbody.velocity, MaxMovementSpeed);

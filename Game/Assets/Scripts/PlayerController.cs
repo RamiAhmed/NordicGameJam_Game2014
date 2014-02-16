@@ -152,7 +152,16 @@ public class PlayerController : MonoBehaviour {
 
 	void Update() {
 		if (IsDead) {
+			if (PlayerBubble.GetComponentInChildren<Renderer>().enabled) {
+				PlayerBubble.GetComponentInChildren<Renderer>().enabled = false;
+			}
+
 			return;
+		}
+		else {
+			if (!PlayerBubble.GetComponentInChildren<Renderer>().enabled) {
+				PlayerBubble.GetComponentInChildren<Renderer>().enabled = true;
+			}
 		}
 
 
@@ -200,6 +209,8 @@ public class PlayerController : MonoBehaviour {
 								_impactAudioSource.Play();
 							}
 						}
+
+						dynObs.GetNewDirection();
 
 					}
 				}

@@ -150,7 +150,23 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-		Instantiate(DynamicGuys[Random.Range(0, DynamicGuys.Count)]);
+		int rand = Random.Range(0, 100);
+		int spawnIndex = 0;
+
+		if (rand < 33) {
+			spawnIndex = 1; // grey guy 1
+		}
+		else if (rand < 66) {
+			spawnIndex = 2; // grey guy 2
+		}
+		else if (rand < 90) {
+			spawnIndex = 3; // malware guy
+		}
+		else {
+			spawnIndex = 0;
+		}
+
+		Instantiate(DynamicGuys[spawnIndex]);
 	}
 
 	private void SwapDynamicObstacleTypes() {
