@@ -12,18 +12,18 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public float MovementSpeed = 10f;
 
-	public float Deceleration = 5f;
+	public float Deceleration = 10f;
 
 	public float TurnSpeed = 2.5f;
 
-	public float SpawnRadiusFromPlayer = 50f;
+	public float SpawnRadiusFromPlayer = 40f;
 
 	public float MinDistanceFromOtherObstacles = 15f;
 
-	public float MinMoveDistance = 50f;
+	public float MinMoveDistance = 40f;
 
 	public float RestartDistance = 5f;
-	public float SlowingDistance = 15f;
+	public float SlowingDistance = 20f;
 
 	public float KillY = -15f;
 
