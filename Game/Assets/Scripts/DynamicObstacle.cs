@@ -10,7 +10,9 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public float HitDamageAmount = 0.5f;
 
-	public float MovementSpeed = 10f;
+	public float MaxMovementSpeed = 25f;
+
+	public float MovementSpeed = 5f;
 
 	public float Deceleration = 10f;
 
@@ -34,6 +36,8 @@ public class DynamicObstacle : MonoBehaviour {
 	private bool _initialized = false;
 
 	private GameObject[] _waypoints = null;
+
+	private Animator _animator = null;
 	
 	void Start () {
 		_player = GameController.Instance.Player.GetComponent<PlayerController>();
@@ -62,6 +66,8 @@ public class DynamicObstacle : MonoBehaviour {
 		_endPoint = getRandomEndPoint();
 
 		this.transform.position = _startPoint;
+
+		_animator = this.GetComponentInChildren<Animator>();
 
 		GameController.Instance.DynamicObstacles.Add(this);
 
@@ -119,6 +125,12 @@ public class DynamicObstacle : MonoBehaviour {
 			this.transform.forward = Vector3.Lerp(this.transform.forward, movementDirection, Time.deltaTime * TurnSpeed);
 
 			this.rigidbody.AddForce(movementDirection * MovementSpeed);
+
+			this.rigidbody.velocity = Vector3.ClampMagnitude(this.rigidbody.velocity, MaxMovementSpeed);
+
+			if (_animator) {
+				_animator.SetBool("isRunning", true);
+			}
 		}
 		else {
 			Vector3 velocity = this.rigidbody.velocity;
@@ -131,6 +143,10 @@ public class DynamicObstacle : MonoBehaviour {
 			if (this.rigidbody.velocity.magnitude < 0.1f) {
 				_startPoint = _endPoint;
 				_endPoint = getRandomEndPoint();
+
+				if (_animator) {
+					_animator.SetBool("isRunning", false);
+				}
 			}
 		}
 

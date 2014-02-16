@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour {
 
 	public AudioController AudioController = null;
 
+	public List<GameObject> GreyGuys = new List<GameObject>();
+
 
 	#region GameController Singleton Pattern
 	public static string PrefabPathAndName = "GameController";
@@ -148,7 +150,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-		Instantiate(Resources.Load("DynamicObstacle"));
+		if (Random.value < 0.5f) {
+			Instantiate(GreyGuys[0]);
+		}
+		else {
+			Instantiate(GreyGuys[1]);
+		}
+		//Instantiate(Resources.Load("DynamicObstacle"));
 	}
 
 	private void SwapDynamicObstacleTypes() {

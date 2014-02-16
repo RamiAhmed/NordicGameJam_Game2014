@@ -210,8 +210,8 @@ public class PlayerController : MonoBehaviour {
 
 	private void adjustPlayerBubble() {
 		if (PlayerBubble != null) {
-			float minBubbleSize = 1.75f, maxBubbleSize = 2.5f;
-			float minBubbleAlpha = 0.2f, maxBubbleAlpha = 0.5f;
+			float minBubbleSize = 1.75f, maxBubbleSize = 2.4f;
+			float minBubbleAlpha = 0.2f, maxBubbleAlpha = 0.4f;
 
 			float health = PlayerHealth/100f;
 			float size = minBubbleSize + (health * (maxBubbleSize - minBubbleSize));
