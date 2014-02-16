@@ -76,7 +76,6 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("Starting the GameController");
 		Initialize();
 	}
 	#endregion
@@ -157,7 +156,8 @@ public class GameController : MonoBehaviour {
 	void OnGUI() {
 		string feedback = "Time: " + GameTime.ToString("F1");
 		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
-		feedback += "\nPlayer health: " + _player.PlayerHealth.ToString();
+		feedback += "\nPlayer time alive: " + _player.TimeAlive.ToString("F0");
+		feedback += "\nPlayer health: " + _player.PlayerHealth.ToString("F0");
 		feedback += "\nPlayer score: " + _player.PlayerScore.ToString("F0");
 		feedback += "\nPlayer multiplier: " + _player.PlayerMultiplier.ToString();
 		
@@ -165,7 +165,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
+//		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
 
 		GameObject obst = Instantiate(Resources.Load("DynamicObstacle")) as GameObject;
 		/*DynamicObstacle o = obst.GetComponent<DynamicObstacle>();

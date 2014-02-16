@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
 	public float PlayerMultiplierIncreaseInterval = 30f;
 	public int PlayerMultiplier = 1;
 
+	public GUISkin PlayerFeedbackGUISkin = null;
+
 	[Range(0, 100)]
 	public float PlayerHealth = 100f;
 
@@ -26,6 +28,21 @@ public class PlayerController : MonoBehaviour {
 	private float _lastMultiplierIncrease = 0f;
 	private float _lastMultiplierDecrease = 0f;
 
+	public float ShowFeedbackDuration = 4f;
+	private float _lastFeedback = 0f;
+	private string _feedbackText = "";
+
+	public float TimeAlive = 0f;
+
+	public GameObject PlayerBubble = null;
+
+	private Animator _animator = null;
+
+	public List<AudioClip> ImpactAudioClips = new List<AudioClip>();
+	//private List<AudioSource> _impactAudioSources = new List<AudioSource>();
+	private AudioSource _impactAudioSource = null;
+
+
 	// Use this for initialization
 	void Start() {
 
@@ -41,7 +58,18 @@ public class PlayerController : MonoBehaviour {
 
 		InvokeRepeating("regenerate", 1f, 1f);
 
-		InvokeRepeating("increaseMultiplier", PlayerMultiplierIncreaseInterval, PlayerMultiplierIncreaseInterval);
+		if (PlayerBubble == null) {
+			Debug.LogWarning("Missing player bubble reference! Set it in the inspector.");
+		}
+
+		_animator = GetComponentInChildren<Animator>();
+
+		if (_impactAudioSource == null) {
+			_impactAudioSource = this.gameObject.AddComponent<AudioSource>();
+			_impactAudioSource.loop = false;
+			_impactAudioSource.playOnAwake = false;
+		}
+
 	}
 
 	private void regenerate() {
@@ -54,7 +82,10 @@ public class PlayerController : MonoBehaviour {
 
 			PlayerMultiplier++;
 
-			GameController.Instance.AudioController.NextClip();
+			PrintFeedback("Multiplier +" + PlayerMultiplier.ToString());
+
+			if (GameController.Instance.AudioController)
+				GameController.Instance.AudioController.NextClip();
 		}
 	}
 
@@ -64,12 +95,16 @@ public class PlayerController : MonoBehaviour {
 
 			PlayerMultiplier = PlayerMultiplier - 1 > 0 ? PlayerMultiplier - 1 : 1;
 
+			PrintFeedback("Multiplier -" + PlayerMultiplier.ToString());
+
 			GameController.Instance.AudioController.PreviousClip();
 		}
 	}
 
 	void Respawn() {
 		if (_waypoints.Length <= 0) return;
+		PrintFeedback("Rebooting...");
+
 
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 		
@@ -82,8 +117,30 @@ public class PlayerController : MonoBehaviour {
 		PlayerMultiplier = 1;
 		PlayerScore = 0;
 
+		TimeAlive = 0f;
+
 		GameController.Instance.AudioController.ChangeClip(0);
 
+		_lastMultiplierIncrease = 0f;
+		_lastMultiplierDecrease = 0f;
+
+		if (_animator) {
+			_animator.SetBool("isRunning", false);
+			_animator.SetBool("isDead", false);
+		}
+	}
+
+	void OnGUI() {
+		if (_feedbackText != "") {
+			if (PlayerFeedbackGUISkin != null) {
+				if (GUI.skin != PlayerFeedbackGUISkin) {
+					GUI.skin = PlayerFeedbackGUISkin;
+				}
+			}
+
+			float width = 400f, height = 150f;
+			GUI.Label(new Rect(Screen.width/3f, Screen.height/3f, width, height), _feedbackText);
+		}
 	}
 
 	// Update is called once per frame
@@ -100,27 +157,43 @@ public class PlayerController : MonoBehaviour {
 
 		PlayerScore += (Time.deltaTime * PlayerMultiplier);
 
+		TimeAlive += Time.deltaTime;
+
+		if (TimeAlive - _lastMultiplierIncrease > PlayerMultiplierIncreaseInterval) {
+			increaseMultiplier();
+		}
+
+		adjustPlayerBubble();
+
 
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
-				Debug.Log("Colliding with: " + hitCollider);
+//				Debug.Log("Colliding with: " + hitCollider);
 				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
 					DynamicObstacle dynObs = hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>();
 					if (dynObs != null) {
 						float damageAmount = dynObs.HitDamageAmount;
 						switch (dynObs.Type) {
-							case DynamicObstacle.ObstacleType.ENEMY: 
+							case DynamicObstacle.ObstacleType.ENEMY:
+								PrintFeedback("Malware detected!");
 								damageAmount *= 2f; 
 								decreaseMultiplier();
-								break;
+							break;
 
 							case DynamicObstacle.ObstacleType.TARGET: 
+								PrintFeedback("Cleaned up the system successfully.");
 								damageAmount *= -1f; 
 								increaseMultiplier();
-								break;
+							break;
 						}
 
 						takeDamage(damageAmount);
+
+						if (!_impactAudioSource.isPlaying) {
+							_impactAudioSource.clip = ImpactAudioClips[Random.Range(0, ImpactAudioClips.Count)];
+							_impactAudioSource.Play();
+						}
+
 					}
 				}
 			}
@@ -128,19 +201,60 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	private void adjustPlayerBubble() {
+		if (PlayerBubble != null) {
+			float minBubbleSize = 1.75f, maxBubbleSize = 2.5f;
+			float minBubbleAlpha = 0.2f, maxBubbleAlpha = 0.5f;
+
+			float health = PlayerHealth/100f;
+			float size = minBubbleSize + (health * (maxBubbleSize - minBubbleSize));
+			float alpha = minBubbleAlpha + (health * (maxBubbleAlpha - minBubbleAlpha));
+
+			PlayerBubble.transform.localScale = new Vector3(size, size, size);
+
+			foreach (Renderer rend in PlayerBubble.GetComponentsInChildren<Renderer>()) {
+				rend.material.color = new Color(rend.material.color.r, rend.material.color.g, rend.material.color.b, alpha);
+			}
+		}
+	}
+
 	private void takeDamage(float damageAmount) {
-		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
+//		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
 		PlayerHealth -= damageAmount;
 		if (PlayerHealth > 100f) 
 			PlayerHealth = 100f;
 
 		if (PlayerHealth <= 0f) {
+			PrintFeedback("System catastrophic crash!");
+
+			if (_animator) {
+				_animator.SetBool("isRunning", false);
+				_animator.SetBool("isDead", true);
+			}
+
 			IsDead = true;
 
 			this.rigidbody.velocity = Vector3.zero;
 			this.rigidbody.angularVelocity = Vector3.zero;
 
-			Invoke("Respawn", 1.5f);
+			Invoke("Respawn", 3f);
+		}
+	}
+
+
+	public void PrintFeedback(string feedback) {
+		if (GameController.Instance.GameTime - _lastFeedback > ShowFeedbackDuration) {
+			_lastFeedback = GameController.Instance.GameTime;
+
+			_feedbackText = feedback;
+
+			Invoke("disableFeedback", ShowFeedbackDuration);
+		}
+	}
+
+	private void disableFeedback() {
+		if (_feedbackText != "") {
+			_feedbackText = "";
 		}
 	}
 
