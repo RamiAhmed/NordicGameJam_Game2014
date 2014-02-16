@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MenuController : MonoBehaviour {
 
+	public string MainGameSceneName = "test_scene_1";
+
 	public GUISkin MenuGUISkin = null;
 
 	public Texture2D MenuBackground;
@@ -28,7 +30,7 @@ public class MenuController : MonoBehaviour {
 		float y = _screenHeight/4f;
 
 		if (GUI.Button(new Rect(_screenWidth/2f, y, 300f, 100f), new GUIContent("Socialize!", "Click this button to start or restart playing"))) {
-			Application.LoadLevel("test_scene_1");
+			Application.LoadLevel(MainGameSceneName);
 		}
 
 		if (GUI.Button(new Rect(_screenWidth/2f, y + 150f, 300f, 100f), new GUIContent("Crash the System", "Click this button to exit the game"))) {
