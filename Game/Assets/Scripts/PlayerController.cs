@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour {
 	public float PlayerHealth = 100f;
 
 	public float PlayerRegenerationPerSecond = 0.5f;
-	private float _lastRegen = 0f;
 
 	public int DeathY = -7;
 
