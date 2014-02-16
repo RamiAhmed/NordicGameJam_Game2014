@@ -157,9 +157,14 @@ public class PlayerController : MonoBehaviour {
 			if (PlayerBubble.GetComponentInChildren<Renderer>().enabled) {
 				PlayerBubble.GetComponentInChildren<Renderer>().enabled = false;
 
-				_bubbleBurst = Instantiate(BubbleBurst) as GameObject;
-				_bubbleBurst.transform.parent = this.gameObject.transform;
-				_bubbleBurst.transform.localPosition = Vector3.zero;
+				if (BubbleBurst != null) {
+					_bubbleBurst = Instantiate(BubbleBurst) as GameObject;
+					_bubbleBurst.transform.parent = this.gameObject.transform;
+					_bubbleBurst.transform.localPosition = Vector3.zero;
+				}
+				else {
+					Debug.LogWarning("Could not find the Bubble Burst prefab on the PlayerController.");
+				}
 			}
 
 			return;
