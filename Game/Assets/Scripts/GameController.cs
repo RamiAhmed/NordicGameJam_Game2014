@@ -151,7 +151,6 @@ public class GameController : MonoBehaviour {
 
 	public void SpawnDynamicObstacle() {
 		Instantiate(DynamicGuys[Random.Range(0, DynamicGuys.Count)]);
-		//Instantiate(Resources.Load("DynamicObstacle"));
 	}
 
 	private void SwapDynamicObstacleTypes() {
