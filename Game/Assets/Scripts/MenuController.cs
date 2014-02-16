@@ -6,11 +6,10 @@ public class MenuController : MonoBehaviour {
 	public GUISkin MenuGUISkin = null;
 
 	public Texture2D MenuBackground;
-
-
+	
 	private float _screenWidth = 0f, _screenHeight = 0f;
 
-	// Use this for initialization
+
 	void Start () {
 		_screenWidth = Screen.width;
 		_screenHeight = Screen.height;
@@ -45,9 +44,5 @@ public class MenuController : MonoBehaviour {
 			GUI.Box(new Rect(Input.mousePosition.x - 250f, _screenHeight - Input.mousePosition.y - 50f, 180f, 150f), GUI.tooltip);
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }

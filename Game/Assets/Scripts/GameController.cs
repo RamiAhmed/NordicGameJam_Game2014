@@ -23,12 +23,7 @@ public class GameController : MonoBehaviour {
 
 	public AudioController AudioController = null;
 
-	/*
-	public int MaxTargets = 1;
-	public int MaxEnemiesSpawned = 5;
-	private int targetsSpawned = 0;
-	private int enemiesSpawned = 0;
-*/
+
 	#region GameController Singleton Pattern
 	public static string PrefabPathAndName = "GameController";
 
@@ -123,23 +118,16 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	public void Remove(DynamicObstacle obstacle)
-	{
+	public void Remove(DynamicObstacle obstacle) {
 		DynamicObstacles.Remove(obstacle);
-		/*if (obstacle.Type == DynamicObstacle.ObstacleType.ENEMY)
-			enemiesSpawned--;
-		else if (obstacle.Type == DynamicObstacle.ObstacleType.TARGET)
-			targetsSpawned--;*/
 	}
-	
-	// Update is called once per frame
+
+
 	void Update () {
 		if (!_initialized || _player == null) {
 			return;
 		}
 
-
-		// Iterate the game time
 		GameTime += Time.deltaTime;
 
 	}
@@ -156,22 +144,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-//		Debug.Log("Spawning dynamic obstacle. GameTime: " + GameTime.ToString("F1"));
-
-		GameObject obst = Instantiate(Resources.Load("DynamicObstacle")) as GameObject;
-		/*DynamicObstacle o = obst.GetComponent<DynamicObstacle>();
-		
-		if (targetsSpawned < MaxTargets)
-		{
-			o.Type = DynamicObstacle.ObstacleType.TARGET;
-			targetsSpawned++;
-		}
-
-		if (enemiesSpawned < MaxEnemiesSpawned)
-		{
-			o.Type = DynamicObstacle.ObstacleType.ENEMY;
-			enemiesSpawned++;
-		}*/
+		Instantiate(Resources.Load("DynamicObstacle"));
 	}
 
 	private void SwapDynamicObstacleTypes() {

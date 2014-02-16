@@ -21,8 +21,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 			
-			if (input.magnitude > deadZone)
-			{
+			if (input.magnitude > deadZone)	{
 				input = input.normalized * ((input.magnitude - deadZone) / (1 - deadZone));
 				
 				movementDir = transform.right * input.x + transform.forward * input.y;
@@ -41,8 +40,7 @@ public class PlayerMovement : MonoBehaviour {
 				}
 
 			}
-			else
-			{
+			else {
 				// slow down when not pressing any directional buttons
 				Vector3 v = rigidbody.velocity;
 				v.x = Mathf.Lerp(v.x, 0, Time.deltaTime * Deceleration);

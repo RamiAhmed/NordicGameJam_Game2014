@@ -38,14 +38,12 @@ public class PlayerController : MonoBehaviour {
 	private Animator _animator = null;
 
 	public List<AudioClip> ImpactAudioClips = new List<AudioClip>();
-	//private List<AudioSource> _impactAudioSources = new List<AudioSource>();
 	private AudioSource _impactAudioSource = null;
 
 	public AudioClip DeathAudioClip = null;
 	private AudioSource _deathAudioSource = null;
 
 
-	// Use this for initialization
 	void Start() {
 
 		_waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
@@ -151,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
+
 	void Update() {
 		if (IsDead) {
 			return;
@@ -176,7 +174,6 @@ public class PlayerController : MonoBehaviour {
 
 		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
-//				Debug.Log("Colliding with: " + hitCollider);
 				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
 					DynamicObstacle dynObs = hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>();
 					if (dynObs != null) {
@@ -229,7 +226,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void takeDamage(float damageAmount) {
-//		Debug.Log("Player takes " + damageAmount.ToString() + " damage.");
 		PlayerHealth -= damageAmount;
 		if (PlayerHealth > 100f) 
 			PlayerHealth = 100f;
