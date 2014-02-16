@@ -124,7 +124,7 @@ public class GameController : MonoBehaviour {
 
 
 	void Update () {
-		if (!_initialized || _player == null) {
+		if (_player == null) {
 			return;
 		}
 

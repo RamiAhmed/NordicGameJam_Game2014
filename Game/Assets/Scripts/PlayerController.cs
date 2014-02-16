@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour {
 
 
 	void Start() {
-
 		_waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 
