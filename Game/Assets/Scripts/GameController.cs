@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
+	public bool DEBUG = true;
+
 	public GameObject Player = null;
 	private PlayerController _player;
 
@@ -133,14 +135,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		string feedback = "Time: " + GameTime.ToString("F1");
-		feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
-		feedback += "\nPlayer time alive: " + _player.TimeAlive.ToString("F0");
-		feedback += "\nPlayer health: " + _player.PlayerHealth.ToString("F0");
-		feedback += "\nPlayer score: " + _player.PlayerScore.ToString("F0");
-		feedback += "\nPlayer multiplier: " + _player.PlayerMultiplier.ToString();
-		
-		GUI.Box (new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
+		if (DEBUG) {
+			string feedback = "Time: " + GameTime.ToString("F1");
+			feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
+			feedback += "\nPlayer time alive: " + _player.TimeAlive.ToString("F0");
+			feedback += "\nPlayer health: " + _player.PlayerHealth.ToString("F0");
+			feedback += "\nPlayer score: " + _player.PlayerScore.ToString("F0");
+			feedback += "\nPlayer multiplier: " + _player.PlayerMultiplier.ToString();
+			
+			GUI.Box(new Rect(5f, 5f, 200f, 100f), new GUIContent(feedback));
+		}
 	}
 
 	public void SpawnDynamicObstacle() {
