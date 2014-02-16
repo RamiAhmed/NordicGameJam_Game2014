@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip DeathAudioClip = null;
 	private AudioSource _deathAudioSource = null;
 
+	public GameObject BubbleBurst = null;
+	private GameObject _bubbleBurst = null;
+
 
 	void Start() {
 
@@ -154,6 +157,10 @@ public class PlayerController : MonoBehaviour {
 		if (IsDead) {
 			if (PlayerBubble.GetComponentInChildren<Renderer>().enabled) {
 				PlayerBubble.GetComponentInChildren<Renderer>().enabled = false;
+
+				_bubbleBurst = Instantiate(BubbleBurst) as GameObject;
+				_bubbleBurst.transform.parent = this.gameObject.transform;
+				_bubbleBurst.transform.localPosition = Vector3.zero;
 			}
 
 			return;
@@ -161,6 +168,10 @@ public class PlayerController : MonoBehaviour {
 		else {
 			if (!PlayerBubble.GetComponentInChildren<Renderer>().enabled) {
 				PlayerBubble.GetComponentInChildren<Renderer>().enabled = true;
+
+				if (_bubbleBurst != null) {
+					Destroy(_bubbleBurst, 0.1f);
+				}
 			}
 		}
 
