@@ -12,19 +12,19 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public float MovementSpeedScaleFactor = 0.01f;
 
-	public float MaxMovementSpeed = 25f;
+	public float MaxMovementSpeed = 50f;
 
-	public float MovementSpeed = 5f;
+	public float MovementSpeed = 20f;
 
 	public float Deceleration = 10f;
 
-	public float TurnSpeed = 2.5f;
+	public float TurnSpeed = 3.5f;
 
-	public float SpawnRadiusFromPlayer = 40f;
+	public float SpawnRadiusFromPlayer = 30f;
 
-	public float MinDistanceFromOtherObstacles = 15f;
+	public float MinDistanceFromOtherObstacles = 10f;
 
-	public float MinMoveDistance = 40f;
+	public float MaxMoveDistance = 50f;
 
 	public float RestartDistance = 5f;
 	public float SlowingDistance = 20f;
@@ -40,6 +40,10 @@ public class DynamicObstacle : MonoBehaviour {
 	private GameObject[] _waypoints = null;
 
 	private Animator _animator = null;
+
+	public float LocationCheckInterval = 10f;
+	private float _lastLocationCheck = 0f;
+	private Vector3 _lastLocation = Vector3.zero;
 	
 	void Start () {
 		_player = GameController.Instance.Player.GetComponent<PlayerController>();
@@ -103,7 +107,7 @@ public class DynamicObstacle : MonoBehaviour {
 				break;
 			}
 			
-		} while (Vector3.Distance(_startPoint, endPoint) < MinMoveDistance || isAnyObstacleTooNear(endPoint));
+		} while (Vector3.Distance(_startPoint, endPoint) > MaxMoveDistance || isAnyObstacleTooNear(endPoint));
 
 		return endPoint;
 	}
@@ -163,6 +167,19 @@ public class DynamicObstacle : MonoBehaviour {
 		}*/
 
 		MovementSpeed += (Time.deltaTime * MovementSpeedScaleFactor);
+
+		if (GameController.Instance.GameTime - _lastLocationCheck > LocationCheckInterval) {
+			_lastLocationCheck = GameController.Instance.GameTime;
+
+			if (_lastLocation.magnitude > 0f) {
+				if (Vector3.Distance(this.transform.position, _lastLocation) < 1f) {
+					getRandomEndPoint();
+				}
+			}
+			else {
+				_lastLocation = this.transform.position;
+			}
+		}
 
 
 	}

@@ -53,10 +53,17 @@ public class PlayerController : MonoBehaviour {
 
 		this.transform.position = _startPoint;
 
-		Vector3 terrainSize = GameObject.FindGameObjectWithTag("Ground").GetComponent<Terrain>().terrainData.size;
-		_terrainCenterPoint = new Vector3(terrainSize.x/2f, 0f, terrainSize.z/2f);
+		GameObject terrain = GameObject.FindGameObjectWithTag("Ground");
+		if (terrain != null) {
+			Vector3 terrainSize = terrain.GetComponent<Terrain>().terrainData.size;
+			_terrainCenterPoint = new Vector3(terrainSize.x/2f, 0f, terrainSize.z/2f);
 
-		this.transform.LookAt(_terrainCenterPoint);
+			this.transform.LookAt(_terrainCenterPoint);
+		}
+		else {
+			this.transform.LookAt(Vector3.zero);
+		}
+
 
 		InvokeRepeating("regenerate", 1f, 1f);
 
@@ -264,7 +271,7 @@ public class PlayerController : MonoBehaviour {
 				_animator.SetBool("isDead", true);
 			}
 
-			if (DeathAudioClip != null) {
+			if (DeathAudioClip != null && !_deathAudioSource != null) {
 				if (!_deathAudioSource.isPlaying) {
 					_deathAudioSource.Play();
 				}
