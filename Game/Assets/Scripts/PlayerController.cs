@@ -51,10 +51,10 @@ public class PlayerController : MonoBehaviour {
 
 		this.transform.position = _startPoint;
 
-		Vector3 terrainSize = GameObject.FindGameObjectWithTag("Ground").GetComponent<Terrain>().terrainData.size;
-		_terrainCenterPoint = new Vector3(terrainSize.x/2f, 0f, terrainSize.z/2f);
+		//Vector3 terrainSize = GameObject.FindGameObjectWithTag("Ground").GetComponent<Terrain>().terrainData.size;
+		//_terrainCenterPoint = new Vector3(terrainSize.x/2f, 0f, terrainSize.z/2f);
 
-		this.transform.LookAt(_terrainCenterPoint);
+		//this.transform.LookAt(_terrainCenterPoint);
 
 		InvokeRepeating("regenerate", 1f, 1f);
 
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 		_startPoint = _waypoints[Random.Range(0, _waypoints.Length)].transform.position;
 		
 		this.transform.position = _startPoint;
-		this.transform.LookAt(_terrainCenterPoint);
+		//this.transform.LookAt(_terrainCenterPoint);
 
 		PlayerHealth = 100f;
 		IsDead = false;
@@ -119,7 +119,8 @@ public class PlayerController : MonoBehaviour {
 
 		TimeAlive = 0f;
 
-		GameController.Instance.AudioController.ChangeClip(0);
+		if (GameController.Instance.AudioController)
+			GameController.Instance.AudioController.ChangeClip(0);
 
 		_lastMultiplierIncrease = 0f;
 		_lastMultiplierDecrease = 0f;

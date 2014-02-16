@@ -22,6 +22,20 @@ public abstract class Movement_Circle : MonoBehaviour
 		gameController = FindObjectOfType(typeof(GameController)) as GameController;
 	}
 
+	void Start()
+	{
+		Reset();
+	}
+
+	public void Reset()
+	{
+		float distanceToFloor = collider.bounds.extents.y;
+		transform.position = -transform.position.normalized * (gameController.WorldRadius - distanceToFloor);
+		transform.up = -transform.position;
+
+		velocity = Vector2.zero;
+	}
+
 	// ref: http://www.gamasutra.com/blogs/JoshSutphin/20130416/190541/Doing_Thumbstick_Dead_Zones_Right.php
 	public void Move(Vector2 input)
 	{
