@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour {
 		adjustPlayerBubble();
 
 
-		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, 5f)) {
+		foreach (Collider hitCollider in Physics.OverlapSphere(this.transform.position, PlayerBubble.transform.localScale.x)) {
 			if (hitCollider.GetType() != typeof(TerrainCollider) && hitCollider.transform.root != this.transform.root) {
 				if (hitCollider.transform.root.gameObject.CompareTag("DynamicObstacle")) {
 					DynamicObstacle dynObs = hitCollider.transform.root.gameObject.GetComponent<DynamicObstacle>();

@@ -10,6 +10,8 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public float HitDamageAmount = 0.5f;
 
+	public float MovementSpeedScaleFactor = 0.001f;
+
 	public float MaxMovementSpeed = 25f;
 
 	public float MovementSpeed = 5f;
@@ -149,15 +151,18 @@ public class DynamicObstacle : MonoBehaviour {
 				}
 			}
 		}
-
+		/*
 		switch (this.Type) {
 			case ObstacleType.ENEMY: changeMaterialColor(Color.red); break;
 			case ObstacleType.NEUTRAL: changeMaterialColor(Color.white); break;
 			case ObstacleType.TARGET: changeMaterialColor(Color.green); break;
-		}
+		}*/
+
+		MovementSpeed += (Time.deltaTime * MovementSpeedScaleFactor);
+
 
 	}
-
+	/*
 	private void changeMaterialColor(Color newColor) {
 		foreach (Renderer rend in GetComponentsInChildren<Renderer>()) {
 			foreach (Material mat in rend.materials) {
@@ -165,7 +170,7 @@ public class DynamicObstacle : MonoBehaviour {
 					mat.color = newColor;
 			}
 		}
-	}
+	}*/
 
 
 	public void RemoveSelf() {
