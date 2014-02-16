@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour {
 	//private List<AudioSource> _impactAudioSources = new List<AudioSource>();
 	private AudioSource _impactAudioSource = null;
 
+	public AudioClip DeathAudioClip = null;
+	private AudioSource _deathAudioSource = null;
+
 
 	// Use this for initialization
 	void Start() {
@@ -64,10 +67,19 @@ public class PlayerController : MonoBehaviour {
 
 		_animator = GetComponentInChildren<Animator>();
 
-		if (_impactAudioSource == null) {
-			_impactAudioSource = this.gameObject.AddComponent<AudioSource>();
-			_impactAudioSource.loop = false;
-			_impactAudioSource.playOnAwake = false;
+		if (ImpactAudioClips.Count > 0) {
+			if (_impactAudioSource == null) {
+				_impactAudioSource = this.gameObject.AddComponent<AudioSource>();
+				_impactAudioSource.loop = false;
+				_impactAudioSource.playOnAwake = false;
+			}
+		}
+
+		if (DeathAudioClip != null) {
+			_deathAudioSource = this.gameObject.AddComponent<AudioSource>();
+			_deathAudioSource.playOnAwake = false;
+			_deathAudioSource.loop = false;
+			_deathAudioSource.clip = DeathAudioClip;
 		}
 
 	}
@@ -186,9 +198,11 @@ public class PlayerController : MonoBehaviour {
 
 						takeDamage(damageAmount);
 
-						if (!_impactAudioSource.isPlaying) {
-							_impactAudioSource.clip = ImpactAudioClips[Random.Range(0, ImpactAudioClips.Count)];
-							_impactAudioSource.Play();
+						if (_impactAudioSource != null) {
+							if (!_impactAudioSource.isPlaying) {
+								_impactAudioSource.clip = ImpactAudioClips[Random.Range(0, ImpactAudioClips.Count)];
+								_impactAudioSource.Play();
+							}
 						}
 
 					}
@@ -227,6 +241,15 @@ public class PlayerController : MonoBehaviour {
 			if (_animator) {
 				_animator.SetBool("isRunning", false);
 				_animator.SetBool("isDead", true);
+			}
+
+			if (DeathAudioClip != null) {
+				if (!_deathAudioSource.isPlaying) {
+					_deathAudioSource.Play();
+				}
+			}
+			else {
+				Debug.LogWarning("Missing Death Audio Clip for Player");
 			}
 
 			IsDead = true;
