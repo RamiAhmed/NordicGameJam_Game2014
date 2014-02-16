@@ -4,6 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour {
 	public float FloorMoveSpeed = 10;
+	public float MaxMoveSpeed = 20;
 	public float Deceleration = 5;
 	public float TurnSpeed = 2.5f;
 
@@ -15,7 +16,8 @@ public class PlayerMovement : MonoBehaviour {
 		animator = GetComponentInChildren<Animator>();
 	}
 
-	void Update() {
+	void FixedUpdate() 
+	{
 		if (!this.transform.root.GetComponent<PlayerController>().IsDead) {
 			Vector3 movementDir = Vector3.zero;
 
@@ -34,6 +36,7 @@ public class PlayerMovement : MonoBehaviour {
 				
 				// move
 				rigidbody.AddForce(movementDir * FloorMoveSpeed);
+				rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, MaxMoveSpeed);
 
 				if (animator) {
 					animator.SetBool("isRunning", true);
