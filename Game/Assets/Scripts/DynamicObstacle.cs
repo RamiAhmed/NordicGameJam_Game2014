@@ -10,7 +10,7 @@ public class DynamicObstacle : MonoBehaviour {
 
 	public float HitDamageAmount = 0.5f;
 
-	public float MovementSpeedScaleFactor = 0.001f;
+	public float MovementSpeedScaleFactor = 0.01f;
 
 	public float MaxMovementSpeed = 25f;
 
@@ -126,7 +126,8 @@ public class DynamicObstacle : MonoBehaviour {
 
 			this.transform.forward = Vector3.Lerp(this.transform.forward, movementDirection, Time.deltaTime * TurnSpeed);
 
-			this.rigidbody.AddForce(movementDirection * MovementSpeed);
+			float speed = MovementSpeed + (_player.PlayerMultiplier * 0.1f);
+			this.rigidbody.AddForce(movementDirection * speed);
 
 			this.rigidbody.velocity = Vector3.ClampMagnitude(this.rigidbody.velocity, MaxMovementSpeed);
 
