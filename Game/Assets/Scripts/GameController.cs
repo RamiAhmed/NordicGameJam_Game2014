@@ -32,7 +32,6 @@ public class GameController : MonoBehaviour {
 	public static string PrefabPathAndName = "GameController";
 
 	private static GameController _instance = null;
-	private static bool _initialized = false;
 
 	public static GameController Instance {
 		get {
@@ -65,7 +64,7 @@ public class GameController : MonoBehaviour {
 		else {
 			Debug.Log("GameController awaking");
 			_instance = this;
-			DontDestroyOnLoad(this.gameObject);
+			//DontDestroyOnLoad(this.gameObject);
 		}
 	}
 
@@ -77,29 +76,35 @@ public class GameController : MonoBehaviour {
 	#endregion
 
 	void Initialize() {
-		if (!_initialized) {
-			_initialized = true;
-			Debug.Log("GameController initializing");
+		Debug.Log("GameController initializing");
 
-			DynamicObstacles = new List<DynamicObstacle>();
+		DynamicObstacles = new List<DynamicObstacle>();
 
-			for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
-				Invoke("SpawnDynamicObstacle", 3f + (float)i * 0.1f);
+		for (int i = 0; i < InitialAmountOfDynamicObstacles; i++) {
+			Invoke("SpawnDynamicObstacle", 3f + (float)i * 0.1f);
+		}
+
+		if (SpawnPeriodically) {
+			InvokeRepeating("SpawnDynamicObstacle", SpawnInterval, SpawnInterval);
+		}
+
+		if (SwapTypesPeriodically) {
+			InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
+		}
+
+		if (AudioController == null) {
+			AudioController = this.GetComponent<AudioController>();
+		}
+
+		#region Get Player Reference
+		if (Player != null) {
+			_player = Player.GetComponent<PlayerController>();
+			if (_player == null) {
+				Debug.LogError("Could not find PlayerController component on Player: " + Player.ToString());
 			}
-
-			if (SpawnPeriodically) {
-				InvokeRepeating("SpawnDynamicObstacle", SpawnInterval, SpawnInterval);
-			}
-
-			if (SwapTypesPeriodically) {
-				InvokeRepeating("SwapDynamicObstacleTypes", SwapTypesInterval, SwapTypesInterval);
-			}
-
-			if (AudioController == null) {
-				AudioController = this.GetComponent<AudioController>();
-			}
-
-			#region Get Player Reference
+		}
+		else {
+			Player = GameObject.FindGameObjectWithTag("Player");
 			if (Player != null) {
 				_player = Player.GetComponent<PlayerController>();
 				if (_player == null) {
@@ -107,19 +112,10 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			else {
-				Player = GameObject.FindGameObjectWithTag("Player");
-				if (Player != null) {
-					_player = Player.GetComponent<PlayerController>();
-					if (_player == null) {
-						Debug.LogError("Could not find PlayerController component on Player: " + Player.ToString());
-					}
-				}
-				else {
-					Debug.LogError("Player oject has not been set on GameController and could not be automatically found");
-				}
+				Debug.LogError("Player oject has not been set on GameController and could not be automatically found");
 			}
-			#endregion
 		}
+		#endregion
 	}
 
 	public void Remove(DynamicObstacle obstacle) {
@@ -134,10 +130,13 @@ public class GameController : MonoBehaviour {
 
 		GameTime += Time.deltaTime;
 
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.LoadLevel(0);
+		}
 	}
 
 	void OnGUI() {
-		if (DEBUG) {
+		if (DEBUG && _player != null) {
 			string feedback = "Time: " + GameTime.ToString("F1");
 			feedback += "\nObstacle count: " + DynamicObstacles.Count.ToString();
 			feedback += "\nPlayer time alive: " + _player.TimeAlive.ToString("F0");

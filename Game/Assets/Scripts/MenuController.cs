@@ -27,7 +27,7 @@ public class MenuController : MonoBehaviour {
 
 		float y = _screenHeight/4f;
 
-		if (GUI.Button(new Rect(_screenWidth/2f, y, 300f, 100f), new GUIContent("Socialize!", "Click this button to start playing"))) {
+		if (GUI.Button(new Rect(_screenWidth/2f, y, 300f, 100f), new GUIContent("Socialize!", "Click this button to start or restart playing"))) {
 			Application.LoadLevel("test_scene_1");
 		}
 
