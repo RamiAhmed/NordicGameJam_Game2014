@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour {
 
 	public AudioController AudioController = null;
 
-	public List<GameObject> GreyGuys = new List<GameObject>();
+	public List<GameObject> DynamicGuys = new List<GameObject>();
 
 
 	#region GameController Singleton Pattern
@@ -150,12 +150,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SpawnDynamicObstacle() {
-		if (Random.value < 0.5f) {
-			Instantiate(GreyGuys[0]);
-		}
-		else {
-			Instantiate(GreyGuys[1]);
-		}
+		Instantiate(DynamicGuys[Random.Range(0, DynamicGuys.Count)]);
 		//Instantiate(Resources.Load("DynamicObstacle"));
 	}
 

@@ -1,0 +1,349 @@
+fileFormatVersion: 2
+guid: d69cb347871aad94ca2b6cec85e533ff
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Bubbah
+    100002: Chest
+    100004: Head
+    100006: Head_End
+    100008: //RootNode
+    100010: Left_Arm
+    100012: Left_Foot
+    100014: Left_Foot_End
+    100016: Left_Forearm
+    100018: Left_Forearm_End
+    100020: Left_Leg
+    100022: Master_Bone
+    100024: Right_Arm
+    100026: Right_Foot
+    100028: Right_Foot_End
+    100030: Right_Forearm
+    100032: Right_Forearm_End
+    100034: Right_Leg
+    400000: Bubbah
+    400002: Chest
+    400004: Head
+    400006: Head_End
+    400008: //RootNode
+    400010: Left_Arm
+    400012: Left_Foot
+    400014: Left_Foot_End
+    400016: Left_Forearm
+    400018: Left_Forearm_End
+    400020: Left_Leg
+    400022: Master_Bone
+    400024: Right_Arm
+    400026: Right_Foot
+    400028: Right_Foot_End
+    400030: Right_Forearm
+    400032: Right_Forearm_End
+    400034: Right_Leg
+    4300000: Bubbah
+    7400000: Idle
+    7400002: Running
+    7400004: AngryRunning
+    7400006: Dying
+    9500000: //RootNode
+    13700000: Bubbah
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bubbah
+        weight: 1
+      - path: Master_Bone
+        weight: 1
+      - path: Master_Bone/Chest
+        weight: 1
+      - path: Master_Bone/Chest/Head
+        weight: 1
+      - path: Master_Bone/Chest/Head/Head_End
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm/Left_Forearm_End
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm/Right_Forearm_End
+        weight: 1
+      - path: Master_Bone/Left_Leg
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot/Left_Foot_End
+        weight: 1
+      - path: Master_Bone/Right_Leg
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot/Right_Foot_End
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Running
+      takeName: Take 001
+      firstFrame: 48
+      lastFrame: 71
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bubbah
+        weight: 1
+      - path: Master_Bone
+        weight: 1
+      - path: Master_Bone/Chest
+        weight: 1
+      - path: Master_Bone/Chest/Head
+        weight: 1
+      - path: Master_Bone/Chest/Head/Head_End
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm/Left_Forearm_End
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm/Right_Forearm_End
+        weight: 1
+      - path: Master_Bone/Left_Leg
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot/Left_Foot_End
+        weight: 1
+      - path: Master_Bone/Right_Leg
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot/Right_Foot_End
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: AngryRunning
+      takeName: Take 001
+      firstFrame: 72
+      lastFrame: 95
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bubbah
+        weight: 1
+      - path: Master_Bone
+        weight: 1
+      - path: Master_Bone/Chest
+        weight: 1
+      - path: Master_Bone/Chest/Head
+        weight: 1
+      - path: Master_Bone/Chest/Head/Head_End
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm/Left_Forearm_End
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm/Right_Forearm_End
+        weight: 1
+      - path: Master_Bone/Left_Leg
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot/Left_Foot_End
+        weight: 1
+      - path: Master_Bone/Right_Leg
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot/Right_Foot_End
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Dying
+      takeName: Take 001
+      firstFrame: 96
+      lastFrame: 119
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bubbah
+        weight: 1
+      - path: Master_Bone
+        weight: 1
+      - path: Master_Bone/Chest
+        weight: 1
+      - path: Master_Bone/Chest/Head
+        weight: 1
+      - path: Master_Bone/Chest/Head/Head_End
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Left_Arm/Left_Forearm/Left_Forearm_End
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm
+        weight: 1
+      - path: Master_Bone/Chest/Right_Arm/Right_Forearm/Right_Forearm_End
+        weight: 1
+      - path: Master_Bone/Left_Leg
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot
+        weight: 1
+      - path: Master_Bone/Left_Leg/Left_Foot/Left_Foot_End
+        weight: 1
+      - path: Master_Bone/Right_Leg
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot
+        weight: 1
+      - path: Master_Bone/Right_Leg/Right_Foot/Right_Foot_End
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: Master_Bone
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
